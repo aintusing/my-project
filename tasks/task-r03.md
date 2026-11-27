@@ -4,7 +4,7 @@ Bootstrap: [PR #12](https://github.com/aintusing/my-project/pull/12), branch tas
 
 - Assigned agent: `claude-3`; label `agent:claude-3`.
 - GitHub Issue: [#11](https://github.com/aintusing/my-project/issues/11).
-- Status: blocked until the wave-one bootstrap PR is merged; not started.
+- Status: in progress by claude-3 (bootstrap PR #12 merged at 1419df4).
 - Branch: `task/r03-offline-graph` (create from synchronized master).
 - Pull Request: none yet.
 - Dependencies: Radar baseline PR #8 merged at `3ca1074`; wave-one bootstrap PR #12 pending.
