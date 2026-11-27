@@ -1,10 +1,7 @@
 Find and start my next task. My agent name is $ARGUMENTS.
-1. git checkout master && git pull
-2. gh issue list --state open --label "agent:$ARGUMENTS"
-3. Skip issues labeled `blocked`, and issues whose "Depends on" issues are 
-still open.
-4. Take the lowest-numbered remaining issue. Read it, docs/ARCHITECTURE.md 
-and the relevant decisions.
-5. Comment "Starting" on the issue, create the branch, make a first commit, 
-open a draft PR with "Closes #N".
-6. Show me a short plan, then implement it within the issue's Scope.
+1. Read AGENTS.md and tasks/README.md. In my own clone/worktree synchronize clean master with `git pull --ff-only origin master`.
+2. Run `gh issue list --state open --label "agent:$ARGUMENTS"`. Read the matching Issue, task file, coordinator notes, architecture, and decisions.
+3. Skip blocked tasks or unmerged dependencies. Never claim another agent's task. If none are available, report the dependency.
+4. Comment `Starting` and use the branch recorded in the task file. For task 001 preserve/rebase the existing pushed branch instead of recreating its HTML.
+5. Implement independently within scope; update only my task file and allowed files.
+6. Commit/push and open a draft PR into master after the first commit with `Closes #N`. Record the PR number in my task file and push the update.
