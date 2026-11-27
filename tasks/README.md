@@ -2,6 +2,8 @@
 
 GitHub Issues define scope and acceptance; these files hold durable handoffs. Read [coordinator notes](coordinator.md), architecture, and decisions first. Base branch: **master**.
 
+Coordination setup: [Issue #6](https://github.com/aintusing/my-project/issues/6), [PR #7](https://github.com/aintusing/my-project/pull/7). Merge #7 before developer task updates begin.
+
 | Task | Agent | Issue | Allowed implementation file | Status | Branch | PR |
 | --- | --- | --- | --- | --- | --- | --- |
 | [001: HTML contract](task-001.md) | claude-1 | [#2](https://github.com/aintusing/my-project/issues/2) | `index.html` | Existing implementation; recovery/validation pending | `agent/claude-1/2-counter-html` | [#5 closed, unmerged](https://github.com/aintusing/my-project/pull/5) |

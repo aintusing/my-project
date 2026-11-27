@@ -3,7 +3,8 @@
 ## Baseline and authority
 - Inspected 2026-11-27: origin/master `cb6772a`, default branch master, Issues #2/#3/#4 open, no open PRs. PR #5 is closed/unmerged with no explanation in its comments/reviews.
 - The user's latest instructions authorize tasks/ and replace the old prohibition on status files. This setup aligns AGENTS.md and Claude commands.
-- Coordination Issue: [#6](https://github.com/aintusing/my-project/issues/6), branch `task/000-team-coordination`. Merge its PR before developers update task files or rely on revised assignments.
+- Coordination Issue: [#6](https://github.com/aintusing/my-project/issues/6), [PR #7](https://github.com/aintusing/my-project/pull/7), branch `task/000-team-coordination`. Merge #7 before developers update task files or rely on revised assignments.
+- Setup verification passed: required task metadata, disjoint implementation scopes, local handoff links, unchanged accepted decision, and whitespace checks. Issues #2/#3/#4 were updated and read back with exactly one agent label each. No feature browser checks were performed for this documentation change.
 - The inspected checkout held claude-1's clean pushed commit `4453b2c`; master was in another worktree. Coordination uses a separate branch from fetched origin/master. Do not switch another agent's worktree.
 
 ## Ownership and handoffs
