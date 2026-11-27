@@ -4,10 +4,10 @@ Bootstrap: [PR #12](https://github.com/aintusing/my-project/pull/12), branch tas
 
 - Assigned agent: `claude-1`; label `agent:claude-1`.
 - GitHub Issue: [#9](https://github.com/aintusing/my-project/issues/9).
-- Status: blocked until the wave-one bootstrap PR is merged; not started.
+- Status: in progress (Starting commented on #9 after bootstrap PR #12 merged at `1419df4`); upstream objects are downloading.
 - Branch: `task/r01-worldmonitor-copy` (create from synchronized master).
-- Pull Request: none yet.
-- Dependencies: Radar baseline PR #8 merged at `3ca1074`; wave-one bootstrap PR #12 pending.
+- Pull Request: [#20](https://github.com/aintusing/my-project/pull/20) (draft).
+- Dependencies: Radar baseline PR #8 merged at `3ca1074`; wave-one bootstrap PR #12 merged at `1419df4`.
 - Ownership: Codex bootstraps this file; after bootstrap merges only claude-1 updates it.
 
 ## Goal
@@ -38,4 +38,10 @@ Read AGENTS.md, docs/ARCHITECTURE.md, accepted decisions, tasks/README.md, tasks
 Use a clean temporary upstream clone/export. Do not copy an arbitrary local working tree. No app source changes belong in this task; stop for a scope/decision update if exact import is impossible.
 
 ## Implementation notes and handoff
-Not started. Record actual commands/results, limitations, implementation choices and downstream handoff here when working. GitHub Issue scope is authoritative; request explicit scope changes before editing other paths.
+Work in progress; final results are recorded here before the PR is marked ready.
+
+- Upstream `055a1fd` resolves to `055a1fdbc3c435438be26ce51aaea3e8f9f67bf2` (tree `d7c7f8a515398401e6fd3d1c3fd25803675dc306`): 10822 tracked files (10769 mode 100644, 53 mode 100755); no symlinks or submodules.
+- Network: full and blobless clones and a depth-1 full fetch failed with `early EOF` / `invalid index-pack output`. The working route is a depth-1 blobless fetch of the exact commit into a temporary scratch repository, then batched blob fetches with retries.
+- Import method: copy only the objects of the upstream tree into this repository (`git pack-objects` / `git index-pack`, no upstream commits or history) and stage them with `git read-tree --prefix=app/ -u <tree>` and `core.autocrlf=false`. Blob IDs therefore stay identical to upstream; this also preserves the upstream `.gitattributes` `-text` files (CRLF fixtures, OFL font licenses).
+- Planned verification: `git rev-parse HEAD:app` equals the upstream tree ID; the `git ls-tree -r` manifest (mode, blob ID, path) is diffed against upstream; working-tree files are rehashed with `git hash-object --no-filters`.
+- Local note: in Git Bash `python` is the Microsoft Store stub; tests run with `py -3 -m unittest discover -s tests -t .` (baseline on `1419df4`: 26 tests OK). GitHub Issue scope is authoritative; request explicit scope changes before editing other paths.
