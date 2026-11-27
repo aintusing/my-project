@@ -4,10 +4,10 @@ Bootstrap: [PR #12](https://github.com/aintusing/my-project/pull/12), branch tas
 
 - Assigned agent: `claude-3`; label `agent:claude-3`.
 - GitHub Issue: [#11](https://github.com/aintusing/my-project/issues/11).
-- Status: in progress by claude-3 (bootstrap PR #12 merged at 1419df4).
+- Status: implemented, PR #13 draft; waiting for the coordinator to split the scope before ready.
 - Branch: `task/r03-offline-graph` (create from synchronized master).
-- Pull Request: none yet.
-- Dependencies: Radar baseline PR #8 merged at `3ca1074`; wave-one bootstrap PR #12 pending.
+- Pull Request: [#13](https://github.com/aintusing/my-project/pull/13), draft.
+- Dependencies: #8 and bootstrap #12 merged (`1419df4`).
 - Ownership: Codex bootstraps this file; after bootstrap merges only claude-3 updates it.
 
 ## Goal
@@ -39,4 +39,19 @@ Read AGENTS.md, docs/ARCHITECTURE.md, accepted decisions, tasks/README.md, tasks
 Read catalog/build_graph.py as reference only; do not modify catalog/, app/, radar/, root dependencies/config or other task files. R03 has no dependency on R01 or R02: document its standalone interface locally; API wiring and app integration wait for later R08.
 
 ## Implementation notes and handoff
-Not started. Record actual commands/results, limitations, implementation choices and downstream handoff here when working. GitHub Issue scope is authoritative; request explicit scope changes before editing other paths.
+The owner extended the task in chat: Earth globe and flat map, real data, events, worldmonitor layers,
+analysis, calmer design, product name Money Bansho. All code stays under `graph/`.
+
+Checks run on 2026-11-27 (Windows 11, Intel UHD, built-in browser, pixel ratio 1.5):
+- `cd graph && npm test`: 59 passed. `python -m unittest discover -s tests -t .`: 26 passed.
+- FPS at 1440x900: synthetic 3D graph, 5000 nodes / 9959 links, 74.3 (10 s, links drawn only for the
+  selection above 2000 nodes); globe with the 15451-node snapshot and events, 54.1 (8 s).
+- 375 px and 1440 px: no horizontal scroll. No page errors in the scripted walkthrough. Missing optional
+  event files produce 404 messages in the console.
+- All requested resources were local; CSP has `connect-src 'none'`.
+
+Not performed: physically disabling the network, a full keyboard walkthrough, contrast measurement,
+a rerun of the WebGL-unavailable check after the globe was added.
+
+Open points: redistribution terms of DefiLlama, CoinGecko, Nasdaq, news headlines and some worldmonitor
+datasets are unverified. SEC filing events are absent: SEC refused requests without contact details.

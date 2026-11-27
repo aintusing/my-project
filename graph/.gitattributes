@@ -1,0 +1,14 @@
+# Generated data and sources use LF.
+*.js text eol=lf
+*.mjs text eol=lf
+*.py text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+# Vendored files keep their exact bytes on every platform (a test checks a SHA-256).
+# These rules come last because later patterns win.
+lib/3d-force-graph.min.js -text -eol
+lib/LICENSE.3d-force-graph -text -eol
+lib/LICENSE.world-atlas -text -eol

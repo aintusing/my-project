@@ -1,91 +1,99 @@
-# Radar graph
+# Money Bansho: graph and world map
 
-A browser module that shows a node-link graph in 3D (vendored `3d-force-graph`) or on a 2D canvas, with a sphere filter, name search and a neighbor panel. UI strings are in Russian. The demo uses synthetic data only.
+A standalone browser module: an Earth globe and a flat world map with market assets by country,
+a 3D "planet" graph (vendored `3d-force-graph`) and a 2D scheme. UI strings are in Russian.
 
 ## Run the demo
 From the repository root:
 
 ```bash
-python -m http.server 8767 --bind 127.0.0.1 --directory graph
+python graph/tools/serve.py 8767
 ```
 
-Open <http://127.0.0.1:8767/>. URL parameters, for example `?nodes=5000&mode=2d&links=all`:
+Open <http://127.0.0.1:8767/>. URL parameters:
 
 | Parameter | Effect |
 | --- | --- |
-| `nodes` | Synthetic node count, clamped to 50-20000. Default (also for `0` or non-numbers): 5000. |
-| `mode=2d` | Forces the 2D view. Otherwise 3D is used when available. |
-| `links=all` | Sets `simplifyAbove` to `Infinity`: draws all links and turns off all large-graph simplification. |
+| `mode=earth\|map\|3d\|2d` | Starting view. `mode=2d` also disables 3D. |
+| `data=synthetic&nodes=5000` | Synthetic data for performance tests (50-20000 nodes, no map views). |
+| `links=all` | Draws all links in the graph views and turns off large-graph simplification. |
+
+## What is on screen
+- **Globe / map.** Assets with a known country sit near that country's label point (country-level
+  accuracy only). Assets without a country fly on an orbit ring on the globe and are absent from
+  the flat map. No country is guessed. A pulsing ring marks a located asset with a recorded hack.
+- **World layers** (optional `fixtures/layers.js`): static datasets derived from worldmonitor,
+  shown as diamonds (finance), squares (infrastructure), triangles (security) and lines.
+- **Controls.** Layer switches, region buttons, sphere and country filters, coloring by sphere,
+  type or risk, three themes, search, pause, zoom buttons, arrow keys.
+- **Side panel.** Overview with counts, most significant assets, weekly movers, a dated hack feed,
+  countries and active world layers; cards for an asset, a country or a layer item.
 
 ## Data
 ```js
-{ nodes: [{ id, name, group, sphere, size }], links: [{ source, target }] }
+{ date, nodes: [{ id, name, group, sphere, size, country, meta }], links: [{ source, target }] }
 ```
+`country` is an ISO alpha-2 code. `meta` may hold `symbol, category, score, interest, flags, tvl,
+mcap, volume, change7d, trust, exchange, hack: { date, usd, how }`. Invalid nodes and dangling,
+duplicate or self links are dropped; missing values are not shown.
 
-Invalid input is dropped or defaulted without a warning:
+World data (`options.world`): `{ shapes: [{ code, rings }], countries: { CODE: { name, at } } }`.
+World layers (`options.geo`): `{ commit, layers: [{ id, label, group, color, kind, items }] }`.
 
-- A node without `id` (`undefined` or `null`) is skipped. IDs become strings; for a repeated ID, the last node wins.
-- Defaults: `name` is the ID, `group` is `unknown`, `sphere` is `group` or else `unknown`. A `size` that is not a positive number becomes 1.
-- A link is dropped if an end is unknown, if it connects a node to itself, or if the pair is already linked (in either direction). `source` and `target` are IDs, not node objects.
-- Missing `data`, `nodes` or `links` gives an empty collection. A non-iterable value such as a number throws.
-
-Groups `sphere`, `chain`, `warning` and `hacked` have their own colors; other groups share one color.
+### Rebuild the snapshot
+`tools/build_snapshot.mjs` reads the catalog CSV files, DefiLlama protocols, SEC XBRL company
+locations and `world-atlas` 2.0.2; the exact arguments are at the top of the file.
+`tools/build_layers.mjs` regenerates the world layers from a worldmonitor checkout.
+The snapshot is dated and is not live data. Scores and flags are heuristics, not advice.
 
 ## API
 ```js
 import { createRadarGraph } from './radar-graph.js';
-
 const radar = createRadarGraph(container, data, {
-  onSelect: (node, neighbors) => console.log(node.id, neighbors.length),
+  world, geo, onSelect: (node, neighbors) => console.log(node.id, neighbors.length),
 });
 ```
 
 | Option | Default | Description |
 | --- | --- | --- |
-| `onSelect` | no-op | `(node, neighbors)`: normalized `{id, name, group, sphere, size}` objects; neighbors are sorted by size (largest first), then name. |
-| `force2d` | `false` | Skips 3D. |
+| `world` | `null` | Enables the globe and map views. |
+| `geo` | `null` | World layers; finance layers start enabled. |
+| `view` | first available | `earth`, `map`, `3d` or `2d`. |
+| `date` | `data.date` | Reference date for the hack feed periods. |
+| `onSelect` | no-op | `(node, neighbors)` on asset selection from any view, search or list. |
+| `force2d` | `false` | Disables 3D. |
 | `forceGraph` | `globalThis.ForceGraph3D` | The 3D library factory. |
-| `simplifyAbove` | `2000` | Simplifies when the shown node count exceeds this value. |
+| `simplifyAbove` | `2000` | Graph views draw only the selected node's links above this size. |
 
-| Returned member | Behavior |
-| --- | --- |
-| `mode` | `'3d'` or `'2d'`. |
-| `select(id)` | Selects, focuses and calls `onSelect`. Pass a string ID. Returns `false` if unknown; switches to all spheres if the node is filtered out. |
-| `search(query)` | Case-insensitive; exact, then prefix, then substring match. Searches the shown nodes first, then all. Selects and returns the match, or returns `null`. |
-| `setSphere(sphere)` | Shows sphere members, their direct neighbors and the members' links. `''` or an unknown value shows everything. Clears a hidden selection without calling `onSelect`. |
-| `counts()` | `{nodes, links}` in the current view, including links not drawn. |
-| `spin()` | Returns a function that moves the camera one step per call (used by the benchmark). |
-| `destroy()` | Releases the view, empties the container and removes its `rg` class. |
+Returned: `mode`, `select(id)`, `search(text)`, `setSphere(name)`, `setCountry(code)`,
+`setView(mode)`, `setColor('sphere'|'type'|'risk')`, `selectGeo(item, layer)`, `counts()`,
+`spin()` (benchmark step), `destroy()`.
 
 ## App integration (task R08)
-- Load `lib/3d-force-graph.min.js` as a classic script before calling `createRadarGraph`, or pass `forceGraph`. Without it you get the 2D view.
-- Ship `radar-graph.js` with `model.js` and `views.js`.
-- The container needs a height. `.rg` sets `flex: 1; min-height: 0`, so use a sized flex column parent or set the height yourself. The module replaces the container's children.
-- Import the `.rg*` styles from `style.css`. That file also styles `*`, `body`, `h1`, `p`, `header`, `button` and `:focus-visible` globally, so scope or extract rules to avoid changing the app.
-- `onSelect` fires from a node click (3D and 2D), search, the neighbor list and `select(id)`.
-- There is no data update method. Call `destroy()` and create a new instance.
+- Ship the `.js` files in this folder plus `fixtures/` as needed; load
+  `lib/3d-force-graph.min.js` as a classic script only if the 3D graph is wanted.
+- The container needs a height. The module replaces its children.
+- `style.css` also styles `body`, `header` and `h1`; extract the `.rg*` rules for an app.
+- Opening an app card: use `onSelect`. There is no data update call: `destroy()` and recreate.
 
-## Large graphs and limitations
-- 3D shows a planet: every node sits on one globe and each sphere forms its own region. There is no physics. The globe rotates until a node is selected or the pointer touches it; a toolbar button pauses and resumes it. It does not start rotating when reduced motion is preferred.
-- Above `simplifyAbove`, both views draw only the selected node's links; 3D also lowers node detail.
-- In 3D, links are straight chords through the globe.
-- 2D is used if forced, if the library or WebGL2 is missing, or if creating the 3D view throws. There is no fallback for later rendering errors.
-- The neighbor panel lists at most 100 neighbors.
-- 2D controls: drag or arrow keys to pan, wheel, `+`/`-` keys or toolbar buttons to zoom (no pinch gesture), click to select. 3D: drag to rotate, wheel to zoom; node dragging is disabled.
-- The code uses `Map.groupBy`, so it needs a recent browser (and Node.js 21 or later for tests).
+## Limitations
+- Country outlines are 1:110m, so very small states have markers but no outline.
+- The globe is drawn on a 2D canvas; lines crossing the map edge may clip.
+- The 2D scheme has no pinch zoom. `Map.groupBy` needs a recent browser (Node.js 21+ for tests).
 
 ## Measure FPS
-1. Open the demo with the parameters you want and keep the tab visible. Wait until the graph is drawn.
-2. Click the FPS button (10 seconds), or run `await benchmark(30)` in the console (default: 10).
-3. The camera rotates (3D) or the canvas pans in a circle (2D) while animation frames are counted.
-
-The button shows average FPS, 95th-percentile frame time and node count. Record the full console result: `mode`, `nodes`, `links`, `links_drawn`, `seconds`, `frames`, `average_fps`, `p95_frame_ms`, `viewport`, `pixel_ratio`, `hidden` and `browser`. Also note the URL, hardware, GPU and display refresh rate. `requestAnimationFrame` is capped by the refresh rate, so the result is not uncapped rendering speed.
+Keep the tab visible and run `await benchmark(10)` in the console. The camera or map moves while
+animation frames are counted. Record mode, nodes, seconds, average FPS, p95 frame time, viewport,
+pixel ratio, browser and hardware. Frames are capped by the display refresh rate.
 
 ## Tests
-From the repository root, run `cd graph`, then `npm test`. There are no dependencies to install. Tests cover graph logic, the synthetic fixture and layout, the vendored bundle hash, and the absence of remote URLs in top-level `.js`, `.css` and `.html` files. They do not exercise the DOM or rendering.
+`cd graph`, then `npm test`. No dependencies to install. Tests do not exercise the DOM or rendering.
 
-## Offline use and CSP
-The demo loads local files and needs no CDN. Its CSP is `default-src 'self'; connect-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:`. The library injects a style tag, hence `'unsafe-inline'` for styles. The minified bundle contains `new Function` calls and the policy does not allow `'unsafe-eval'`, so check the browser console under your app's policy.
+## Offline use, security and licenses
+All code, styles and data load locally. The demo CSP is `default-src 'self'; connect-src 'none';
+style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:`. External strings are inserted only
+as text. No threat-indicator addresses are included.
 
-## Licenses
-The module is `AGPL-3.0-only` (`package.json`). `3d-force-graph` 1.80.3 is MIT; see `lib/LICENSE.3d-force-graph`, `lib/THIRD_PARTY_LICENSES.txt` (bundled dependencies) and `lib/PROVENANCE.md` (source, hashes, versions). Keep these files when you redistribute the bundle.
+The module is `AGPL-3.0-only`. See `ATTRIBUTION.md` (data sources), `lib/PROVENANCE.md`,
+`lib/THIRD_PARTY_LICENSES.txt`, `lib/LICENSE.3d-force-graph` and `lib/LICENSE.world-atlas`.
+Redistribution terms of the DefiLlama and CoinGecko snapshot data have not been verified.

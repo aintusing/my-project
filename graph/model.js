@@ -8,6 +8,7 @@ export function buildModel(data) {
     nodes.set(id, {
       id, name: String(raw.name ?? id), group: String(raw.group ?? 'unknown'),
       sphere: String(raw.sphere ?? raw.group ?? 'unknown'), size: Number(raw.size) > 0 ? Number(raw.size) : 1,
+      country: raw.country ? String(raw.country) : null, meta: raw.meta ?? null,
     });
   }
   const adjacency = new Map([...nodes.keys()].map(id => [id, new Set()]));

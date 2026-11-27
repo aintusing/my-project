@@ -13,7 +13,9 @@
 
 The minified file is prebuilt by the upstream author. The table lists the dependency tree npm
 resolved on the fetch date; exact versions inside the prebuilt bundle may differ.
-License texts are in `THIRD_PARTY_LICENSES.txt`.
+License texts are in `THIRD_PARTY_LICENSES.txt`; only trailing whitespace was removed from them.
+`LICENSE.world-atlas` is the ISC notice of `world-atlas` 2.0.2, used to generate `../fixtures/world.js`
+from Natural Earth (public domain) outlines.
 
 | Package | Resolved version | License |
 | --- | --- | --- |

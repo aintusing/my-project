@@ -1,0 +1,30 @@
+/* Money Bansho: a quiet, printed look. Flat surfaces, one accent, no glow. Loaded last. */
+body { --head: #121315; --head-edge: #2a2c30; --head-text: #ece8df; --head-dim: #9b968c; --head-accent: #d3a54a; background: #121315; }
+body:has(.rg[data-theme="aurora"]) { --head: #11150f; --head-edge: #2a3226; --head-accent: #a9bd6a; }
+body:has(.rg[data-theme="day"]) { --head: #f4f0e6; --head-edge: #d9d2c0; --head-text: #1d1b17; --head-dim: #5f594d; --head-accent: #8a5a10; background: #f4f0e6; }
+header { background: var(--head); padding-block: 12px; }
+h1 { font: 600 22px/1.1 "Iowan Old Style", "Palatino Linotype", Georgia, serif; letter-spacing: 0; text-transform: none; }
+h1::before { content: none; }
+
+.rg, .rg[data-theme="night"] { --bg: #121315; --card: #18191c; --edge: #2a2c30; --text: #ece8df; --dim: #9b968c; --accent: #d3a54a;
+  --good: #8fb573; --warn: #d9a441; --bad: #d96c5f;
+  --earth-space: #0e0f11; --earth-ocean: #1c2833; --earth-deep: #121a22; --earth-land: #2b2f33; --earth-line: #555b62; --earth-glow: #d3a54a; --earth-ink: #ece8df; }
+.rg[data-theme="aurora"] { --bg: #11150f; --card: #171c14; --edge: #2a3226; --accent: #a9bd6a;
+  --earth-space: #0d110b; --earth-ocean: #1f2d27; --earth-deep: #131c18; --earth-land: #2c3327; --earth-line: #56634a; --earth-glow: #a9bd6a; }
+.rg[data-theme="day"] { --bg: #f4f0e6; --card: #fbf8f0; --edge: #d9d2c0; --text: #1d1b17; --dim: #5f594d; --accent: #8a5a10;
+  --good: #3f6b2a; --warn: #8a5a10; --bad: #a23b2c;
+  --earth-space: #e8e2d3; --earth-ocean: #cdd8d6; --earth-deep: #a9bcbb; --earth-land: #f6f1e2; --earth-line: #8d8574; --earth-glow: #8a5a10; --earth-ink: #1d1b17; }
+.rg, .rg[data-theme="day"] { --float: none; --glass: var(--card); }
+
+/* Square, unshadowed controls and cards. */
+.rg select, .rg input, .rg button, .rg-tabs, .rg-layers, .rg-regions, .rg .rg-regions button, .rg .rg-legend button, .rg .rg-tools button,
+.rg-tip, .rg-panel section, .rg-tiles div, .rg-panel dl, .rg-meter, .rg-panel p.rg-risk, .rg-flags span, .rg .rg-panel button.rg-back { border-radius: 3px; }
+.rg-layers, .rg-regions, .rg .rg-tools button { backdrop-filter: none; box-shadow: none; }
+.rg-tip { box-shadow: none; }
+.rg .rg-legend button[aria-pressed="true"] { box-shadow: none; }
+.rg-legend i, .rg-risk::before, .rg-timeline li::after { box-shadow: none; }
+.rg-layers summary, .rg-layers legend, .rg-panel h3, .rg-panel p.rg-kicker { letter-spacing: 0; text-transform: none; font-size: 12px; }
+.rg-panel h2, .rg-panel p.rg-big, .rg-tiles strong { font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif; font-weight: 600; }
+.rg-panel section { background: transparent; border-width: 1px 0 0; border-radius: 0; padding-inline: 0; }
+.rg-status::before { content: none; }
+.rg .rg-tabs button[aria-pressed="true"], .rg .rg-panel .rg-panel-tabs button[aria-pressed="true"] { background: var(--text); border-color: var(--text); color: var(--bg); }
