@@ -1,11 +1,13 @@
 # R03: Offline graph module with search and 2D fallback
 
+Bootstrap: [PR #12](https://github.com/aintusing/my-project/pull/12), branch task/radar-wave-1. Wait for merge before starting implementation.
+
 - Assigned agent: `claude-3`; label `agent:claude-3`.
 - GitHub Issue: [#11](https://github.com/aintusing/my-project/issues/11).
 - Status: blocked until the wave-one bootstrap PR is merged; not started.
 - Branch: `task/r03-offline-graph` (create from synchronized master).
 - Pull Request: none yet.
-- Dependencies: Radar baseline PR #8 merged at `3ca1074`; wave-one bootstrap PR pending.
+- Dependencies: Radar baseline PR #8 merged at `3ca1074`; wave-one bootstrap PR #12 pending.
 - Ownership: Codex bootstraps this file; after bootstrap merges only claude-3 updates it.
 
 ## Goal
@@ -26,7 +28,7 @@ Build a standalone reusable graph module with filters, search with camera flight
 - Run the graph checks documented by the module, python -m unittest discover -s tests -t . and git diff --check. Record actual output, UI/offline/performance evidence and unperformed checks.
 
 ## Depends on
-Radar baseline is merged in PR #8 at master 3ca10744faaec7468d39b01bb593d5ee6c781a42. Wait for the wave-one bootstrap PR (branch task/radar-wave-1) to merge into master before Starting; the task file must be available there.
+Radar baseline is merged in PR #8 at master 3ca10744faaec7468d39b01bb593d5ee6c781a42. Wait for the wave-one bootstrap PR #12 (https://github.com/aintusing/my-project/pull/12; branch task/radar-wave-1) to merge into master before Starting; the task file must be available there.
 
 ## Agent
 `agent:claude-3` (role label; GitHub username mapping unconfirmed).

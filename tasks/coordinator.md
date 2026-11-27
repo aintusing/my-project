@@ -1,5 +1,7 @@
 # Radar coordination notes
 
+Bootstrap: [PR #12](https://github.com/aintusing/my-project/pull/12), branch task/radar-wave-1. Wait for merge before starting implementation.
+
 ## Authority and baseline
 - Inspected 2026-11-27: fetched origin/master is `3ca10744faaec7468d39b01bb593d5ee6c781a42`,
   Radar adoption PR #8. Verified AGENTS.md, architecture, accepted decisions 0001/0002,

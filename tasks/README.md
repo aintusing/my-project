@@ -1,5 +1,7 @@
 # Radar team tasks
 
+Bootstrap: [PR #12](https://github.com/aintusing/my-project/pull/12), branch task/radar-wave-1. Wait for merge before starting implementation.
+
 GitHub Issues define scope and acceptance; task files hold durable handoffs.
 Read [coordinator notes](coordinator.md), [architecture](../docs/ARCHITECTURE.md),
 and accepted [decisions](../docs/decisions/) first. Base branch: **master**.

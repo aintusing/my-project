@@ -1,11 +1,13 @@
 # R02: SQLite catalog search and loopback API
 
+Bootstrap: [PR #12](https://github.com/aintusing/my-project/pull/12), branch task/radar-wave-1. Wait for merge before starting implementation.
+
 - Assigned agent: `claude-2`; label `agent:claude-2`.
 - GitHub Issue: [#10](https://github.com/aintusing/my-project/issues/10).
 - Status: blocked until the wave-one bootstrap PR is merged; not started.
 - Branch: `task/r02-catalog-api` (create from synchronized master).
 - Pull Request: none yet.
-- Dependencies: Radar baseline PR #8 merged at `3ca1074`; wave-one bootstrap PR pending.
+- Dependencies: Radar baseline PR #8 merged at `3ca1074`; wave-one bootstrap PR #12 pending.
 - Ownership: Codex bootstraps this file; after bootstrap merges only claude-2 updates it.
 
 ## Goal
@@ -29,7 +31,7 @@ Index the existing crypto and stock catalog in SQLite with full-text search and 
 - Keep the implementation around 300 changed lines; report a necessary split before exceeding scope. No new paid dependency, shared root config, UI edits or external network requirement during search.
 
 ## Depends on
-Radar baseline is merged in PR #8 at master 3ca10744faaec7468d39b01bb593d5ee6c781a42. Wait for the wave-one bootstrap PR (branch task/radar-wave-1) to merge into master before Starting; the task file must be available there.
+Radar baseline is merged in PR #8 at master 3ca10744faaec7468d39b01bb593d5ee6c781a42. Wait for the wave-one bootstrap PR #12 (https://github.com/aintusing/my-project/pull/12; branch task/radar-wave-1) to merge into master before Starting; the task file must be available there.
 
 ## Agent
 `agent:claude-2` (role label; GitHub username mapping unconfirmed).
