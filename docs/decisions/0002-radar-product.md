@@ -1,5 +1,5 @@
 # 0002: The product is Radar, built on a full copy of worldmonitor
-Status: Proposed (accepted when merged into master)
+Status: Accepted
 ## Context
 The click counter was a trial of the team workflow. The owner wants a hackathon product
 covering crypto, memecoins and stocks.
