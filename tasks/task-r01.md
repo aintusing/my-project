@@ -6,7 +6,7 @@ Bootstrap: [PR #12](https://github.com/aintusing/my-project/pull/12), branch tas
 - GitHub Issue: [#9](https://github.com/aintusing/my-project/issues/9).
 - Status: in progress (Starting commented on #9 after bootstrap PR #12 merged at `1419df4`); upstream objects are downloading.
 - Branch: `task/r01-worldmonitor-copy` (create from synchronized master).
-- Pull Request: none yet.
+- Pull Request: [#20](https://github.com/aintusing/my-project/pull/20) (draft).
 - Dependencies: Radar baseline PR #8 merged at `3ca1074`; wave-one bootstrap PR #12 merged at `1419df4`.
 - Ownership: Codex bootstraps this file; after bootstrap merges only claude-1 updates it.
 
