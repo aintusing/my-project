@@ -37,7 +37,9 @@ Bootstrap: [PR #12](https://github.com/aintusing/my-project/pull/12), branch tas
   and Issue scope. Codex reconciles shared notes without concurrent task-file edits.
 
 ## Review, dependencies and merge order
-1. A human reviews and merges the wave-one bootstrap PR; its author does not merge it.
+1. The owner explicitly authorized Codex to review and merge bootstrap PR #12 after
+   checks pass, then unblock ready dependents. This one-time authorization supersedes
+   the earlier human-only merge instruction for this PR; developer PR rules remain.
 2. Start R01/R02/R03 concurrently. Each goes through a draft PR, actual checks,
    rebase on current origin/master, Codex review and human merge.
    They may merge in any order because their write scopes are disjoint.
@@ -64,9 +66,9 @@ Bootstrap: [PR #12](https://github.com/aintusing/my-project/pull/12), branch tas
   If supplied rules prohibit prewritten code, stop and report.
 - This bootstrap changes coordination documents only. No feature/UI/startup/offline/FPS
   checks were run; those are assigned explicitly to the relevant developers.
-- `python -m unittest discover -s tests -t .` could not execute: sandbox access to
-  python.exe failed; an approved retry outside the sandbox returned exit 1 with
-  "Python". Get-Command resolves Python to the WindowsApps execution alias.
-  No passing test claim is made; rerun with a working interpreter before feature merges.
+- Required Python suite passed: 26 tests, 0.270 s, OK. Ran the installed interpreter
+  `C:/Users/banan/AppData/Roaming/uv/python/cpython-3.13.5-windows-x86_64-none/python.exe`
+  with `-m unittest discover -s tests -t .`. The default WindowsApps alias failed
+  earlier; the installed Python 3.13.5 interpreter resolves that environment issue.
 - Whitespace, task/Issue metadata, disjoint scopes and remote-state validation are
   recorded in the bootstrap PR. No feature has been merged during this first move.
