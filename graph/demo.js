@@ -13,7 +13,7 @@ const data = synthetic ? syntheticGraph(count) : snapshot;
 const geo = synthetic ? null : await import('./fixtures/layers.js').then(m => m.default, () => null);
 // Every event file is optional; the ones present are joined.
 const load = path => import(path).then(m => m.default, () => null);
-const events = synthetic ? null : mergeEvents(await Promise.all(['./fixtures/events.js', './fixtures/events-extra.js', './fixtures/events-cn-eu.js'].map(load)));
+const events = synthetic ? null : mergeEvents(await Promise.all(['./fixtures/events.js', './fixtures/events-extra.js'].map(load)));
 const news = synthetic ? null : await load('./fixtures/sources.js');
 const analysis = synthetic ? null : await import('./analytics.js').then(m => m.analyticsSection, () => null);
 const radar = createRadarGraph(document.getElementById('graph'), data, {

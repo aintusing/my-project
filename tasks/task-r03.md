@@ -4,7 +4,7 @@ Bootstrap: [PR #12](https://github.com/aintusing/my-project/pull/12), branch tas
 
 - Assigned agent: `claude-3`; label `agent:claude-3`.
 - GitHub Issue: [#11](https://github.com/aintusing/my-project/issues/11).
-- Status: implemented, PR #13 draft; waiting for the coordinator to split the scope before ready.
+- Status: one PR #13 reviewed in four blocks (coordinator decision); draft until the merge gates close.
 - Branch: `task/r03-offline-graph` (create from synchronized master).
 - Pull Request: [#13](https://github.com/aintusing/my-project/pull/13), draft.
 - Dependencies: #8 and bootstrap #12 merged (`1419df4`).
@@ -39,19 +39,31 @@ Read AGENTS.md, docs/ARCHITECTURE.md, accepted decisions, tasks/README.md, tasks
 Read catalog/build_graph.py as reference only; do not modify catalog/, app/, radar/, root dependencies/config or other task files. R03 has no dependency on R01 or R02: document its standalone interface locally; API wiring and app integration wait for later R08.
 
 ## Implementation notes and handoff
-The owner extended the task in chat: Earth globe and flat map, real data, events, worldmonitor layers,
-analysis, calmer design, product name Money Bansho. All code stays under `graph/`.
+Coordinator decision (2026-11-27): one PR #13, sequential review of A core, B Earth/data,
+C events/sources, D analysis; merge only as a whole. The earlier split #18/#19 is cancelled and is
+not a dependency. Full scope is `graph/` (blocks listed in the claude-3 comment on head `00b0ca5`)
+plus this file. The owner's chat requests behind it: globe and flat map, real data, events,
+worldmonitor layers, analysis, calmer design, product name Money Bansho.
 
-Checks run on 2026-11-27 (Windows 11, Intel UHD, built-in browser, pixel ratio 1.5):
-- `cd graph && npm test`: 59 passed. `python -m unittest discover -s tests -t .`: 26 passed.
-- FPS at 1440x900: synthetic 3D graph, 5000 nodes / 9959 links, 74.3 (10 s, links drawn only for the
-  selection above 2000 nodes); globe with the 15451-node snapshot and events, 54.1 (8 s).
-- 375 px and 1440 px: no horizontal scroll. No page errors in the scripted walkthrough. Missing optional
-  event files produce 404 messages in the console.
-- All requested resources were local; CSP has `connect-src 'none'`.
+Checks (Windows 11, Intel UHD, built-in browser, pixel ratio 1.5):
+- `cd graph && node --test` on the committed test files: 59 passed.
+- `python -m unittest discover -s tests -t .`: 26 passed. Fresh clone with `core.autocrlf=true`: 59 passed.
+- FPS at 1440x900: synthetic 3D graph 5000 nodes / 9959 links 74.3 (10 s, links only for the selection
+  above 2000 nodes); globe with 15451 nodes and events 54.1 (8 s).
+- Console and CSP: fresh tab, all four views, five panel tabs, three color modes: no console messages,
+  no page errors, no CSP violations, all requests local.
+- Contrast (computed text/background ratio, 1084 text elements per theme): night min 5.24, paper min 5.2,
+  no failures. Moss reported one pressed view button at 2.71 during a color transition; its settled
+  colors are dark text on ivory.
+- Keyboard (real key presses): 70 Tab stops all visible with a focus outline; view switch, map pan and
+  zoom, opening a card, back button and layer panel toggle work. Map markers are selected through search
+  and lists, not directly.
+- WebGL disabled (stubbed `getContext`): globe, map and scheme work, the 3D graph tab is absent.
+- 375 px and 1440 px: no horizontal scroll.
 
-Not performed: physically disabling the network, a full keyboard walkthrough, contrast measurement,
-a rerun of the WebGL-unavailable check after the globe was added.
-
-Open points: redistribution terms of DefiLlama, CoinGecko, Nasdaq, news headlines and some worldmonitor
-datasets are unverified. SEC filing events are absent: SEC refused requests without contact details.
+Open merge gates:
+- Physical network disconnect test (not performed: would change system settings).
+- Redistribution rights for DefiLlama, CoinGecko, Nasdaq, publisher headlines, military base and other
+  worldmonitor datasets. Needs a coordinator/owner decision: confirm, or drop them from the snapshot.
+- Rebase on `origin/master` before marking ready.
+- China/Europe sources requested by the owner are outside the approved scope; not committed.
