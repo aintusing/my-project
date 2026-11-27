@@ -4,7 +4,7 @@
 - Главный Codex (`agent:codex`) — единственный координатор. Claude-1/2/3 и новый
   codex-4 — разработчики с одинаковым AGENTS.md branch/testing/reporting/PR workflow.
   Реестр: [agents/README.md](agents/README.md); профиль [codex-4](agents/codex-4.md).
-- Codex-3 получает независимую R10 [#25](https://github.com/aintusing/my-project/issues/25):
+- codex-4 получает независимую R10 [#25](https://github.com/aintusing/my-project/issues/25):
   catalog/build_catalog.py, tests/test_catalog_sources.py, docs/CATALOG_SOURCES.md,
   tasks/task-r10.md. Нет пересечения с R02 catalog/db + radar/api, R03 graph/ или R01 app/.
 - #25 ждёт только merge регистрации из task/register-codex-4. После merge снять blocked,
