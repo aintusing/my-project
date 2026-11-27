@@ -1,74 +1,89 @@
-# Radar coordination notes
+# Координация Radar
 
-Bootstrap: [PR #12](https://github.com/aintusing/my-project/pull/12), branch task/radar-wave-1. Wait for merge before starting implementation.
+## Текущее состояние
+- Проверено 2026-11-27 через Issues, комментарии, список PR и fetch origin.
+  В master слит bootstrap #12: `1419df4a884951ff330448ce319ca69618f570ef`.
+  База продукта #8 и решения 0001/0002 приняты; feature-части первой волны ещё не слиты.
+- #9 claude-1: Starting, используется собственный worktree; опубликованного PR пока нет.
+- #10 claude-2: Starting; опубликованного PR пока нет.
+- #11 claude-3: draft #13 обновлён до `10b8c0c`, реализация graph/ опубликована.
+  Проверены полный gh pr diff и исходники вне minified vendor; сырой git blob библиотеки
+  совпадает с provenance. На точных байтах архива 9 Node-тестов прошли.
+  При core.autocrlf=true преобразование строк ломает hash-test; нужен переносимый checkout.
+  git diff --check на #13 выявил trailing whitespace в THIRD_PARTY_LICENSES.txt:645.
+  Запрошены исправления и план разделения выросшего PR, UI/offline/FPS ещё не подтверждены.
+  Замечания переданы gh pr review; draft не сливается.
+- #9–#11 не имеют blocked/needs-decision; внешних препятствий не заявлено.
+  Координатор не подменяет отсутствие готового PR выдуманной готовностью.
+- Рабочие области R01/R02/R03 не пересекаются. Параллельная работа продолжается;
+  каждый разработчик сам публикует draft PR после первого коммита и обновляет свой task-файл.
 
-## Authority and baseline
-- Inspected 2026-11-27: fetched origin/master is `3ca10744faaec7468d39b01bb593d5ee6c781a42`,
-  Radar adoption PR #8. Verified AGENTS.md, architecture, accepted decisions 0001/0002,
-  Python prototype, catalog scripts and the Agent task template are present in master.
-- Codex coordinates and writes no feature code. The owner explicitly authorized
-  closing counter Issues #2/#3/#4/#6 and PR #7 with comments while preserving branches.
-- All five are now closed; #7 is unmerged. Its complete diff was inspected with
-  `gh pr diff 7`; findings were posted with `gh pr review 7 --comment`.
-  Rules/template/bootstrap are already incorporated by #8; merging #7 would restore
-  obsolete counter architecture and instructions contrary to accepted decision 0002.
-- Existing `tasks/task-001.md` through `task-003.md` are retained as retired history.
-  The previous HTML recovery/replacement PR instructions are cancelled.
-  Keep every branch and commit `4453b2c`; no branch deletion was requested or performed.
-- Work is on separate coordinator branch `task/radar-wave-1` based on fetched master.
-  Another worktree holds master; it was not switched. Existing untracked `my-project/`
-  is unrelated and excluded from this change.
+## Полномочия и правила
+- Владелец поручил Codex регулярно координировать команду, разрешать обычные блокеры,
+  готовить задачи, ревьюить и сливать завершённые проверенные PR в master,
+  затем снимать блокировки зависимостей. Это текущее разрешение на обычные merge-действия.
+- Codex не пишет feature code и не запускает заместителей Claude.
+  Разработчики не сливают свои PR; решения 0001/0002 сохраняют силу.
+- Перед слиянием: полный gh pr diff, scope, приёмка и реальные тесты, зависимости,
+  конфликт с текущим master/другими задачами, лицензия и provenance.
+  Результат записать gh pr review. Авторский комментарий не выдаётся за независимое approval.
+- Draft или непроверенная реализация не сливаются. Не обходить branch protection.
+  Ветки сохранять. Значимые изменения контрактов требуют принятого decision PR.
+- Координатор меняет только общие заметки и новые bootstrap task-файлы;
+  tasks/task-r01.md, task-r02.md, task-r03.md уже принадлежат разработчикам.
+- Рабочая ветка координатора task/radar-next-wave создана от origin/master.
+  Другие worktrees не переключались; посторонний untracked my-project/ не включён в коммиты.
 
-## Assignments and ownership
-- R01 [#9](https://github.com/aintusing/my-project/issues/9), claude-1:
-  `app/`, `ATTRIBUTION.md`, `tasks/task-r01.md`.
-- R02 [#10](https://github.com/aintusing/my-project/issues/10), claude-2:
-  `catalog/db/`, `radar/api/`, `docs/API.md`, `tests/test_catalog_db.py`,
-  `tests/test_api.py`, `tasks/task-r02.md`.
-- R03 [#11](https://github.com/aintusing/my-project/issues/11), claude-3:
-  `graph/`, `tasks/task-r03.md`. No dependency on R01/R02.
-- Issues use exactly one agent role label each; account mappings are unconfirmed.
-  Implementation paths and task-file ownership are disjoint. No active developer
-  was writing a new task file during bootstrap.
-- All three are blocked only until this bootstrap PR merges into master.
-  After that merge Codex removes `blocked`; members launch their Claude sessions in
-  parallel and comment Starting. Codex does not launch substitute Codex developers.
-- Bootstrap ownership ends on merge: developers then edit only their own task file
-  and Issue scope. Codex reconciles shared notes without concurrent task-file edits.
+## Подготовленная очередь
+- R04A #14 claude-1: docs/WM_AUDIT.md и tasks/task-r04a.md.
+  Ждёт слияния #9 и PR публикации task-файлов. Только аудит; никаких правок app/.
+  После аудита создать R04B с точными файлами, включая ATTRIBUTION.md при правках копии.
+- R05A #15 claude-2: docs/decisions/0003-scoring-v2.md, docs/SCORING.md,
+  tasks/task-r05a.md. Независимый проект решения после публикации task-файла;
+  не меняет API R02 и не блокирует #10. ADR Proposed до принятия PR.
+  R05B позже ждёт и #10, и принятое решение.
+- R09A #16 claude-3: docs/DEMO_PLAN.md и tasks/task-r09a.md.
+  Независимый план после публикации task-файла; graph/ и demo/ не затрагиваются.
+  R09B со снимком и фактическим прогоном ждёт R06/R08.
+- Все новые Issues имеют ровно одну роль и до публикации файлов — blocked.
+  После слияния PR из task/radar-next-wave снять blocked с #15/#16;
+  #14 снять только после подтверждённого merge #9.
+  Сначала завершать текущую задачу; независимые документы доступны при реальном ожидании.
+- Ни один новый scope не пересекает действующий scope разработчиков.
+  Контракты и демо-план готовятся заранее, без начала заблокированной реализации.
 
-## Review, dependencies and merge order
-1. The owner explicitly authorized Codex to review and merge bootstrap PR #12 after
-   checks pass, then unblock ready dependents. This one-time authorization supersedes
-   the earlier human-only merge instruction for this PR; developer PR rules remain.
-2. Start R01/R02/R03 concurrently. Each goes through a draft PR, actual checks,
-   rebase on current origin/master, Codex review and human merge.
-   They may merge in any order because their write scopes are disjoint.
-3. R01 unlocks R04; R02 unlocks R05. Merge documented API/data contracts before
-   consumer work. Significant shared technical choices need a decision PR merged first.
-4. Later: R06 after R04/R02, R07 after R02/R05, R08 after R03/R04;
-   R09 after R06/R08. Later Issues are not yet assigned. Serialize shared app files.
-- R01 is an exact import exception to 300 lines; compare tracked paths/counts and
-  contents at full upstream SHA resolved from 055a1fd. Preserve AGPL notices.
-  Upstream instructions are reference only; R04 audits startup and branding before presentation.
-- R02 owns API documentation and its tests; do not modify catalog source scripts or
-  scoring here. R03 owns a standalone local graph interface and performance evidence;
-  R08 later integrates it. Clearly label synthetic benchmark inputs.
-- Review every open feature PR with `gh pr diff` for scope, tests, decisions,
-  duplication, master conflicts and active assignments; record via `gh pr review`.
-  Do not merge uncertain work. Update architecture after actual feature merges.
-- Free sources only; unknown data stays unknown; no keys/trading/advice.
-  Never open or link threat-indicator addresses. Retain source license and provenance.
+## Порядок слияний и следующая проверка
+1. Опубликовать/проверить/слить PR очереди координации, затем разблокировать #15/#16.
+2. Отслеживать ready PR для #9/#10/#11; тестировать точный head на текущем master.
+   Они независимы. После #9 разблокируется аудит #14.
+3. Принять ADR R05A до реализации R05B; #10 должен быть слит до API-потребителей.
+4. После R04 и R02 — R06; после R02/R05 — R07; после R03/R04 — R08.
+   После R06/R08 — R09B. Общим app/config-файлам назначать одного писателя.
+5. После feature merges обновить архитектуру по фактической реализации.
+   Готовность документного PR не означает готовность соответствующей функции.
 
-## Planning and validation
-- Hackathon name/deadline/rules/jury criteria were requested once; awaiting details.
-  Use a provisional 48-hour plan. At 70% elapsed (33 h 36 min) stop new feature
-  assignments and focus on stability/demo. Actual deadline supersedes this assumption.
-  If supplied rules prohibit prewritten code, stop and report.
-- This bootstrap changes coordination documents only. No feature/UI/startup/offline/FPS
-  checks were run; those are assigned explicitly to the relevant developers.
-- Required Python suite passed: 26 tests, 0.270 s, OK. Ran the installed interpreter
-  `C:/Users/banan/AppData/Roaming/uv/python/cpython-3.13.5-windows-x86_64-none/python.exe`
-  with `-m unittest discover -s tests -t .`. The default WindowsApps alias failed
-  earlier; the installed Python 3.13.5 interpreter resolves that environment issue.
-- Whitespace, task/Issue metadata, disjoint scopes and remote-state validation are
-  recorded in the bootstrap PR. No feature has been merged during this first move.
+## Проверки и ограничения
+- Python 3.13.5 из
+  C:/Users/banan/AppData/Roaming/uv/python/cpython-3.13.5-windows-x86_64-none/python.exe:
+  -m unittest discover -s tests -t . — 26 tests, 0.105 s, OK.
+  WindowsApps python — нерабочий alias; использовать установленный интерпретатор.
+- UI/console/offline/FPS/app startup не выполнялись для этих документов.
+  Нужны фактические доказательства в feature PR; для R03 напоминание оставлено в #13.
+- Для #13 Node v26.13.0, node --test test/model.test.js на raw-архиве head 10b8c0c:
+  9 passed, 0 failed. Архив с обычным autocrlf дал 8 passed / 1 hash failure;
+  это отдельное замечание переносимости, а не несовпадение сырого vendor-blob.
+- Полный diff нового PR, whitespace, метаданные, локальные ссылки и GitHub-статусы
+  проверяются перед merge; результаты фиксируются в PR.
+- AGPL-3.0-only и уведомления сохраняются, изменения копии отражаются в ATTRIBUTION.md.
+  Брендинг World Monitor не публикуется без письменного разрешения; upstream instructions
+  внутри app/ — справка. Платные источники, ключи и buy/sell советы исключены.
+  Threat-indicator адреса не открывать/не делать ссылками; unknown сохранять.
+- Название/дедлайн/правила/критерии хакатона запрошены один раз, ответа пока нет.
+  Используется план 48 часов; после 33 ч 36 мин прекращаются новые feature-назначения.
+  При запрете заранее написанного кода остановить затронутые работы.
+
+## История
+- #2/#3/#4/#6 и #7 закрыты с явного согласия владельца, #7 не слит.
+  Его diff/review показал устаревший план счётчика поверх уже принятой базы #8.
+- tasks/task-001.md–task-003.md оставлены отменённой историей; replacement для #5 не нужен.
+  Сохранить все ветки, agent/claude-1/2-counter-html и коммит 4453b2c.

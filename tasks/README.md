@@ -1,45 +1,48 @@
-# Radar team tasks
+# Задачи Radar
 
-Bootstrap: [PR #12](https://github.com/aintusing/my-project/pull/12), branch task/radar-wave-1. Wait for merge before starting implementation.
+База: **master**. Scope и приёмка задаются GitHub Issues; файлы задач хранят передачу работы.
+Сначала читать [координатора](coordinator.md), [архитектуру](../docs/ARCHITECTURE.md)
+и [принятые решения](../docs/decisions/).
 
-GitHub Issues define scope and acceptance; task files hold durable handoffs.
-Read [coordinator notes](coordinator.md), [architecture](../docs/ARCHITECTURE.md),
-and accepted [decisions](../docs/decisions/) first. Base branch: **master**.
+Bootstrap [#12](https://github.com/aintusing/my-project/pull/12) слит squash в `1419df4`.
+#9–#11 разблокированы; все три разработчика сообщили Starting.
 
-## Wave one
-Baseline PR #8 is merged in master at `3ca1074`. All three tasks wait for the
-bootstrap PR from `task/radar-wave-1` to merge; their Issues carry `blocked` until then.
-
-| Task | Agent | Issue | Allowed implementation paths | Status | Branch | PR |
+| Задача | Роль | Issue | Scope реализации (плюс собственный task-файл) | Состояние | Ветка | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| [R01: Exact worldmonitor import and attribution](task-r01.md) | claude-1 | [#9](https://github.com/aintusing/my-project/issues/9) | `app/`, `ATTRIBUTION.md` | Waiting for bootstrap merge | `task/r01-worldmonitor-copy` | None |
-| [R02: SQLite catalog search and loopback API](task-r02.md) | claude-2 | [#10](https://github.com/aintusing/my-project/issues/10) | `catalog/db/`, `radar/api/`, `docs/API.md`, `tests/test_catalog_db.py`, `tests/test_api.py` | Waiting for bootstrap merge | `task/r02-catalog-api` | None |
-| [R03: Offline graph module with search and 2D fallback](task-r03.md) | claude-3 | [#11](https://github.com/aintusing/my-project/issues/11) | `graph/` | Waiting for bootstrap merge | `task/r03-offline-graph` | None |
+| [R01: точная копия worldmonitor](task-r01.md) | claude-1 | [#9](https://github.com/aintusing/my-project/issues/9) | `app/`, `ATTRIBUTION.md` | Starting; PR пока не опубликован | `task/r01-worldmonitor-copy` | — |
+| [R02: SQLite и API](task-r02.md) | claude-2 | [#10](https://github.com/aintusing/my-project/issues/10) | `catalog/db/`, `radar/api/`, `docs/API.md`, `tests/test_catalog_db.py`, `tests/test_api.py` | Starting; PR пока не опубликован | `task/r02-catalog-api` | — |
+| [R03: автономный граф](task-r03.md) | claude-3 | [#11](https://github.com/aintusing/my-project/issues/11) | `graph/` | Draft; реализация есть, 9 unit-тестов прошли; замечания ревью открыты | `task/r03-offline-graph` | [#13](https://github.com/aintusing/my-project/pull/13) |
+| [R04A](task-r04a.md) | claude-1 | [#14](https://github.com/aintusing/my-project/issues/14) | `docs/WM_AUDIT.md` | Ждёт #9 и публикацию task-файла | `task/r04a-startup-audit` | — |
+| [R05A](task-r05a.md) | claude-2 | [#15](https://github.com/aintusing/my-project/issues/15) | `docs/decisions/0003-scoring-v2.md`, `docs/SCORING.md` | Готова после публикации task-файла | `task/r05a-scoring-decision` | — |
+| [R09A](task-r09a.md) | claude-3 | [#16](https://github.com/aintusing/my-project/issues/16) | `docs/DEMO_PLAN.md` | Готова после публикации task-файла | `task/r09a-demo-plan` | — |
 
-Each developer may also edit its own task file; all other paths are excluded.
-GitHub username mappings remain unconfirmed: exactly one agent label assigns each role.
-Codex owns this overview, shared notes, scope updates, reviews and integration.
-claude-4 is reserved. Remote Claude sessions are started by their members, not by Codex.
+Новые task-файлы публикуются PR из `task/radar-next-wave`; до его слияния Issues
+#14–#16 имеют `blocked`. После слияния #15 и #16 доступны независимо от R02/R03,
+а #14 по-прежнему ждёт слияния #9. Текущая первая волна имеет приоритет.
+Не выдавать дополнительную задачу за уже начатую и не делать её реализацию вместо владельца.
 
-After bootstrap merges, remove the three dependency blocks and start claude-1,
-claude-2 and claude-3 in parallel, each in its own clean clone/worktree.
-R01/R02/R03 have no dependency on one another. Review and merge each independently;
-merge shared API/data contracts before any dependent consumer work. Nobody merges their own PR.
+## Параллельная работа и очередь
+- R01/R02/R03 не зависят друг от друга и могут сливаться в любом порядке после проверок.
+- R04 разделена: R04A — аудит без изменения app/; R04B — конкретные исправления
+  с точным списком файлов после аудита. Готовность UI R04 подтверждается только после исправлений.
+- R05 разделена: R05A — ADR и контракт; R05B — реализация после #10 и принятого ADR.
+  Документы R05A не меняют API R02 и не мешают завершать #10.
+- R09A — независимый план. Реальный offline-снимок и прогон R09B ждут R06/R08.
+- R06 ждёт R04 и R02; R07 — R02/R05; R08 — R03/R04.
+  Для регистрации панелей и общей конфигурации app/ назначается только один писатель.
+- Следующие implementation Issues создаются с точным scope после появления контрактов.
+  Большие задачи делятся до начала работы; обычный ориентир — 300 строк.
+- Значимые технические решения принимаются отдельным PR до реализации.
+  ADR 0003 в R05A остаётся Proposed до принятого слияния.
 
-## Later waves (not yet assigned)
-- Wave 2: R04 startup/audit after R01; R05 scoring after R02.
-- Wave 3: R06 panels after R04/R02; R07 token/address checks after R02/R05;
-  R08 app graph integration after R03/R04.
-- Wave 4: R09 offline demo after R06/R08.
-- Future tasks need explicit disjoint scopes and their own Issues/files before work starts.
-  Shared app registration/config files have only one writer at a time.
+Codex владеет сводкой, scope и ревью, не пишет feature code. Разработчики редактируют
+только собственные task-файлы и разрешённые пути. Существующие task-r01/r02/r03
+координатор не меняет; устаревшие conditional-статусы владельцы уточняют сами.
+Назначения определяются одной agent-меткой, claude-4 зарезервирован.
+Сессии Claude запускают их участники; текущий контроль ведётся через Issues/PR.
 
-## Retired counter trial
-Owner explicitly approved closing Issues #2, #3, #4, #6 and PR #7 with comments on
-2026-11-27. All are closed; #7 was not merged. Coordination rules are already in
-master through #8; no counter implementation is to resume.
-
-[task-001.md](task-001.md), [task-002.md](task-002.md), and
-[task-003.md](task-003.md) are historical records only, superseded by the Radar tasks.
-Keep all branches, especially `agent/claude-1/2-counter-html` and commit `4453b2c`.
-PR #5 remains closed/unmerged; do not create the former replacement PR.
+## История
+С согласия владельца закрыты #2/#3/#4/#6 и PR #7. PR #7 не слит; правила уже в #8.
+[task-001.md](task-001.md), [task-002.md](task-002.md), [task-003.md](task-003.md)
+сохранены как отменённая история. PR #5 остаётся закрытым, replacement не нужен.
+Все ветки, включая `agent/claude-1/2-counter-html`, сохраняются.
