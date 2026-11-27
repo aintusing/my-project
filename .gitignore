@@ -1,0 +1,16 @@
+# чужой репозиторий (AGPL-3.0), клонируется отдельно
+vendor/
+
+# локальная база и панель
+data/
+
+# генерируется скриптами catalog/
+catalog/out/*
+!catalog/out/SUMMARY.md
+
+__pycache__/
+*.pyc
+.env
+.env.*
+.claude/launch.json
+.claude/settings.local.json
