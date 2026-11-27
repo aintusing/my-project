@@ -1,0 +1,809 @@
+{
+ "note": "X-аккаунты внесены по памяти модели и не сверены. Перед доверием открыть профиль и проверить: двойников много.",
+ "x_accounts": [
+  {
+   "handle": "zachxbt",
+   "name": "ZachXBT",
+   "group": "Расследователи"
+  },
+  {
+   "handle": "tayvano_",
+   "name": "Taylor Monahan",
+   "group": "Расследователи"
+  },
+  {
+   "handle": "pcaversaccio",
+   "name": "pcaversaccio",
+   "group": "Расследователи"
+  },
+  {
+   "handle": "samczsun",
+   "name": "samczsun",
+   "group": "Расследователи"
+  },
+  {
+   "handle": "officer_cia",
+   "name": "Officer's Notes",
+   "group": "Расследователи"
+  },
+  {
+   "handle": "0xfoobar",
+   "name": "foobar",
+   "group": "Расследователи"
+  },
+  {
+   "handle": "molly0xFFF",
+   "name": "Molly White",
+   "group": "Расследователи"
+  },
+  {
+   "handle": "coffeebreak_YT",
+   "name": "Coffeezilla",
+   "group": "Расследователи"
+  },
+  {
+   "handle": "lookonchain",
+   "name": "Lookonchain",
+   "group": "Ончейн-аналитика"
+  },
+  {
+   "handle": "spotonchain",
+   "name": "Spot On Chain",
+   "group": "Ончейн-аналитика"
+  },
+  {
+   "handle": "bubblemaps",
+   "name": "Bubblemaps",
+   "group": "Ончейн-аналитика"
+  },
+  {
+   "handle": "arkham",
+   "name": "Arkham",
+   "group": "Ончейн-аналитика"
+  },
+  {
+   "handle": "nansen_ai",
+   "name": "Nansen",
+   "group": "Ончейн-аналитика"
+  },
+  {
+   "handle": "whale_alert",
+   "name": "Whale Alert",
+   "group": "Ончейн-аналитика"
+  },
+  {
+   "handle": "EmberCN",
+   "name": "EmberCN",
+   "group": "Ончейн-аналитика"
+  },
+  {
+   "handle": "OnchainDataNerd",
+   "name": "Onchain Data Nerd",
+   "group": "Ончейн-аналитика"
+  },
+  {
+   "handle": "ai_9684xtpa",
+   "name": "Ai Yi",
+   "group": "Ончейн-аналитика"
+  },
+  {
+   "handle": "DefiLlama",
+   "name": "DefiLlama",
+   "group": "Ончейн-аналитика"
+  },
+  {
+   "handle": "0xngmi",
+   "name": "0xngmi",
+   "group": "Ончейн-аналитика"
+  },
+  {
+   "handle": "glassnode",
+   "name": "Glassnode",
+   "group": "Ончейн-аналитика"
+  },
+  {
+   "handle": "cryptoquant_com",
+   "name": "CryptoQuant",
+   "group": "Ончейн-аналитика"
+  },
+  {
+   "handle": "santimentfeed",
+   "name": "Santiment",
+   "group": "Ончейн-аналитика"
+  },
+  {
+   "handle": "DuneAnalytics",
+   "name": "Dune",
+   "group": "Ончейн-аналитика"
+  },
+  {
+   "handle": "PeckShieldAlert",
+   "name": "PeckShield Alert",
+   "group": "Безопасность"
+  },
+  {
+   "handle": "CertiKAlert",
+   "name": "CertiK Alert",
+   "group": "Безопасность"
+  },
+  {
+   "handle": "SlowMist_Team",
+   "name": "SlowMist",
+   "group": "Безопасность"
+  },
+  {
+   "handle": "BlockSecTeam",
+   "name": "BlockSec",
+   "group": "Безопасность"
+  },
+  {
+   "handle": "realScamSniffer",
+   "name": "Scam Sniffer",
+   "group": "Безопасность"
+  },
+  {
+   "handle": "CyversAlerts",
+   "name": "Cyvers",
+   "group": "Безопасность"
+  },
+  {
+   "handle": "GoPlusSecurity",
+   "name": "GoPlus",
+   "group": "Безопасность"
+  },
+  {
+   "handle": "Rugcheckxyz",
+   "name": "RugCheck",
+   "group": "Безопасность"
+  },
+  {
+   "handle": "RektHQ",
+   "name": "Rekt",
+   "group": "Безопасность"
+  },
+  {
+   "handle": "_SEAL_Org",
+   "name": "Security Alliance",
+   "group": "Безопасность"
+  },
+  {
+   "handle": "chainalysis",
+   "name": "Chainalysis",
+   "group": "Безопасность"
+  },
+  {
+   "handle": "trmlabs",
+   "name": "TRM Labs",
+   "group": "Безопасность"
+  },
+  {
+   "handle": "ellipticco",
+   "name": "Elliptic",
+   "group": "Безопасность"
+  },
+  {
+   "handle": "HalbornSecurity",
+   "name": "Halborn",
+   "group": "Безопасность"
+  },
+  {
+   "handle": "zellic_io",
+   "name": "Zellic",
+   "group": "Безопасность"
+  },
+  {
+   "handle": "trailofbits",
+   "name": "Trail of Bits",
+   "group": "Безопасность"
+  },
+  {
+   "handle": "WuBlockchain",
+   "name": "Wu Blockchain",
+   "group": "Новости"
+  },
+  {
+   "handle": "tier10k",
+   "name": "db",
+   "group": "Новости"
+  },
+  {
+   "handle": "DeItaone",
+   "name": "Walter Bloomberg",
+   "group": "Новости"
+  },
+  {
+   "handle": "WatcherGuru",
+   "name": "Watcher Guru",
+   "group": "Новости"
+  },
+  {
+   "handle": "CoinDesk",
+   "name": "CoinDesk",
+   "group": "Новости"
+  },
+  {
+   "handle": "Cointelegraph",
+   "name": "Cointelegraph",
+   "group": "Новости"
+  },
+  {
+   "handle": "TheBlock__",
+   "name": "The Block",
+   "group": "Новости"
+  },
+  {
+   "handle": "decryptmedia",
+   "name": "Decrypt",
+   "group": "Новости"
+  },
+  {
+   "handle": "Blockworks_",
+   "name": "Blockworks",
+   "group": "Новости"
+  },
+  {
+   "handle": "DLNewsInfo",
+   "name": "DL News",
+   "group": "Новости"
+  },
+  {
+   "handle": "DefiantNews",
+   "name": "The Defiant",
+   "group": "Новости"
+  },
+  {
+   "handle": "EleanorTerrett",
+   "name": "Eleanor Terrett",
+   "group": "Новости"
+  },
+  {
+   "handle": "laurashin",
+   "name": "Laura Shin",
+   "group": "Новости"
+  },
+  {
+   "handle": "FortuneCrypto",
+   "name": "Fortune Crypto",
+   "group": "Новости"
+  },
+  {
+   "handle": "VitalikButerin",
+   "name": "Vitalik Buterin",
+   "group": "Основатели и биржи"
+  },
+  {
+   "handle": "aeyakovenko",
+   "name": "Anatoly Yakovenko",
+   "group": "Основатели и биржи"
+  },
+  {
+   "handle": "rajgokal",
+   "name": "Raj Gokal",
+   "group": "Основатели и биржи"
+  },
+  {
+   "handle": "cz_binance",
+   "name": "CZ",
+   "group": "Основатели и биржи"
+  },
+  {
+   "handle": "heyibinance",
+   "name": "Yi He",
+   "group": "Основатели и биржи"
+  },
+  {
+   "handle": "brian_armstrong",
+   "name": "Brian Armstrong",
+   "group": "Основатели и биржи"
+  },
+  {
+   "handle": "saylor",
+   "name": "Michael Saylor",
+   "group": "Основатели и биржи"
+  },
+  {
+   "handle": "justinsuntron",
+   "name": "Justin Sun",
+   "group": "Основатели и биржи"
+  },
+  {
+   "handle": "star_okx",
+   "name": "Star Xu",
+   "group": "Основатели и биржи"
+  },
+  {
+   "handle": "a1lon9",
+   "name": "Alon (Pump.fun)",
+   "group": "Основатели и биржи"
+  },
+  {
+   "handle": "Pumpfun",
+   "name": "Pump.fun",
+   "group": "Основатели и биржи"
+  },
+  {
+   "handle": "JupiterExchange",
+   "name": "Jupiter",
+   "group": "Основатели и биржи"
+  },
+  {
+   "handle": "RaydiumProtocol",
+   "name": "Raydium",
+   "group": "Основатели и биржи"
+  },
+  {
+   "handle": "dexscreener",
+   "name": "DEX Screener",
+   "group": "Основатели и биржи"
+  },
+  {
+   "handle": "binance",
+   "name": "Binance",
+   "group": "Основатели и биржи"
+  },
+  {
+   "handle": "coinbase",
+   "name": "Coinbase",
+   "group": "Основатели и биржи"
+  },
+  {
+   "handle": "CoinbaseAssets",
+   "name": "Coinbase Assets",
+   "group": "Основатели и биржи"
+  },
+  {
+   "handle": "okx",
+   "name": "OKX",
+   "group": "Основатели и биржи"
+  },
+  {
+   "handle": "Bybit_Official",
+   "name": "Bybit",
+   "group": "Основатели и биржи"
+  },
+  {
+   "handle": "solana",
+   "name": "Solana",
+   "group": "Основатели и биржи"
+  },
+  {
+   "handle": "base",
+   "name": "Base",
+   "group": "Основатели и биржи"
+  },
+  {
+   "handle": "blknoiz06",
+   "name": "Ansem",
+   "group": "Мемкоин-инфлюенсеры (могут рекламировать за деньги)"
+  },
+  {
+   "handle": "MustStopMurad",
+   "name": "Murad",
+   "group": "Мемкоин-инфлюенсеры (могут рекламировать за деньги)"
+  },
+  {
+   "handle": "cobie",
+   "name": "Cobie",
+   "group": "Мемкоин-инфлюенсеры (могут рекламировать за деньги)"
+  },
+  {
+   "handle": "CryptoHayes",
+   "name": "Arthur Hayes",
+   "group": "Мемкоин-инфлюенсеры (могут рекламировать за деньги)"
+  },
+  {
+   "handle": "elonmusk",
+   "name": "Elon Musk",
+   "group": "Мемкоин-инфлюенсеры (могут рекламировать за деньги)"
+  },
+  {
+   "handle": "notthreadguy",
+   "name": "Threadguy",
+   "group": "Мемкоин-инфлюенсеры (могут рекламировать за деньги)"
+  },
+  {
+   "handle": "orangie",
+   "name": "Orangie",
+   "group": "Мемкоин-инфлюенсеры (могут рекламировать за деньги)"
+  },
+  {
+   "handle": "theunipcs",
+   "name": "Unipcs (Bonk Guy)",
+   "group": "Мемкоин-инфлюенсеры (могут рекламировать за деньги)"
+  },
+  {
+   "handle": "GiganticRebirth",
+   "name": "GCR",
+   "group": "Мемкоин-инфлюенсеры (могут рекламировать за деньги)"
+  },
+  {
+   "handle": "HsakaTrades",
+   "name": "Hsaka",
+   "group": "Мемкоин-инфлюенсеры (могут рекламировать за деньги)"
+  },
+  {
+   "handle": "SECGov",
+   "name": "SEC",
+   "group": "Регуляторы"
+  },
+  {
+   "handle": "CFTC",
+   "name": "CFTC",
+   "group": "Регуляторы"
+  },
+  {
+   "handle": "TheJusticeDept",
+   "name": "US DOJ",
+   "group": "Регуляторы"
+  },
+  {
+   "handle": "FBI",
+   "name": "FBI",
+   "group": "Регуляторы"
+  },
+  {
+   "handle": "USTreasury",
+   "name": "US Treasury",
+   "group": "Регуляторы"
+  },
+  {
+   "handle": "ESMAComms",
+   "name": "ESMA",
+   "group": "Регуляторы"
+  }
+ ],
+ "telegram": [
+  {
+   "channel": "investigations",
+   "name": "ZachXBT: расследования"
+  },
+  {
+   "channel": "lookonchainchannel",
+   "name": "Lookonchain"
+  },
+  {
+   "channel": "whale_alert_io",
+   "name": "Whale Alert"
+  },
+  {
+   "channel": "spotonchain",
+   "name": "Spot On Chain"
+  },
+  {
+   "channel": "arkhamintelligence",
+   "name": "Arkham"
+  },
+  {
+   "channel": "defillama_tg",
+   "name": "DefiLlama"
+  },
+  {
+   "channel": "wublockchainenglish",
+   "name": "Wu Blockchain"
+  },
+  {
+   "channel": "WatcherGuru",
+   "name": "Watcher Guru"
+  },
+  {
+   "channel": "unfolded",
+   "name": "unfolded"
+  },
+  {
+   "channel": "cointelegraph",
+   "name": "Cointelegraph"
+  },
+  {
+   "channel": "decryptnews",
+   "name": "Decrypt"
+  },
+  {
+   "channel": "CryptoRankNews",
+   "name": "CryptoRank"
+  }
+ ],
+ "feeds": [
+  {
+   "name": "CoinDesk",
+   "url": "https://www.coindesk.com/arc/outboundfeeds/rss/",
+   "group": "Издания"
+  },
+  {
+   "name": "Cointelegraph",
+   "url": "https://cointelegraph.com/rss",
+   "group": "Издания"
+  },
+  {
+   "name": "The Block",
+   "url": "https://www.theblock.co/rss.xml",
+   "group": "Издания"
+  },
+  {
+   "name": "Decrypt",
+   "url": "https://decrypt.co/feed",
+   "group": "Издания"
+  },
+  {
+   "name": "Blockworks",
+   "url": "https://blockworks.co/feed",
+   "group": "Издания"
+  },
+  {
+   "name": "DL News",
+   "url": "https://www.dlnews.com/arc/outboundfeeds/rss/",
+   "group": "Издания"
+  },
+  {
+   "name": "The Defiant",
+   "url": "https://thedefiant.io/api/feed",
+   "group": "Издания"
+  },
+  {
+   "name": "Bitcoin Magazine",
+   "url": "https://bitcoinmagazine.com/feed",
+   "group": "Издания"
+  },
+  {
+   "name": "CryptoSlate",
+   "url": "https://cryptoslate.com/feed/",
+   "group": "Издания"
+  },
+  {
+   "name": "NewsBTC",
+   "url": "https://www.newsbtc.com/feed/",
+   "group": "Издания"
+  },
+  {
+   "name": "CryptoPotato",
+   "url": "https://cryptopotato.com/feed/",
+   "group": "Издания"
+  },
+  {
+   "name": "U.Today",
+   "url": "https://u.today/rss",
+   "group": "Издания"
+  },
+  {
+   "name": "AMBCrypto",
+   "url": "https://ambcrypto.com/feed/",
+   "group": "Издания"
+  },
+  {
+   "name": "Cryptonews",
+   "url": "https://cryptonews.com/news/feed/",
+   "group": "Издания"
+  },
+  {
+   "name": "Bitcoinist",
+   "url": "https://bitcoinist.com/feed/",
+   "group": "Издания"
+  },
+  {
+   "name": "CoinJournal",
+   "url": "https://coinjournal.net/feed/",
+   "group": "Издания"
+  },
+  {
+   "name": "Crypto Briefing",
+   "url": "https://cryptobriefing.com/feed/",
+   "group": "Издания"
+  },
+  {
+   "name": "Unchained",
+   "url": "https://unchainedcrypto.com/feed/",
+   "group": "Издания"
+  },
+  {
+   "name": "Wu Blockchain",
+   "url": "https://wublock.substack.com/feed",
+   "group": "Издания"
+  },
+  {
+   "name": "Bankless",
+   "url": "https://www.bankless.com/feed",
+   "group": "Издания"
+  },
+  {
+   "name": "ForkLog",
+   "url": "https://forklog.com/feed",
+   "group": "На русском"
+  },
+  {
+   "name": "Bits.media",
+   "url": "https://bits.media/rss2/",
+   "group": "На русском"
+  },
+  {
+   "name": "Incrypted",
+   "url": "https://incrypted.com/feed/",
+   "group": "На русском"
+  },
+  {
+   "name": "Protos",
+   "url": "https://protos.com/feed/",
+   "group": "Расследования и безопасность"
+  },
+  {
+   "name": "Rekt",
+   "url": "https://rekt.news/rss/feed.xml",
+   "group": "Расследования и безопасность"
+  },
+  {
+   "name": "Web3 Is Going Great",
+   "url": "https://www.web3isgoinggreat.com/feed.xml",
+   "group": "Расследования и безопасность"
+  },
+  {
+   "name": "Chainalysis",
+   "url": "https://www.chainalysis.com/blog/feed/",
+   "group": "Расследования и безопасность"
+  },
+  {
+   "name": "TRM Labs",
+   "url": "https://www.trmlabs.com/resources/blog/rss.xml",
+   "group": "Расследования и безопасность"
+  },
+  {
+   "name": "SlowMist",
+   "url": "https://slowmist.medium.com/feed",
+   "group": "Расследования и безопасность"
+  },
+  {
+   "name": "CertiK",
+   "url": "https://certik.medium.com/feed",
+   "group": "Расследования и безопасность"
+  },
+  {
+   "name": "Trail of Bits",
+   "url": "https://blog.trailofbits.com/feed/",
+   "group": "Расследования и безопасность"
+  },
+  {
+   "name": "Krebs on Security",
+   "url": "https://krebsonsecurity.com/feed/",
+   "group": "Расследования и безопасность"
+  },
+  {
+   "name": "Vitalik",
+   "url": "https://vitalik.eth.limo/feed.xml",
+   "group": "Экосистемы"
+  },
+  {
+   "name": "Ethereum Foundation",
+   "url": "https://blog.ethereum.org/feed.xml",
+   "group": "Экосистемы"
+  },
+  {
+   "name": "Hacker News: crypto",
+   "url": "https://hnrss.org/newest?q=crypto",
+   "group": "Экосистемы"
+  },
+  {
+   "name": "SEC",
+   "url": "https://www.sec.gov/news/pressreleases.rss",
+   "group": "Регуляторы"
+  },
+  {
+   "name": "SEC Litigation",
+   "url": "https://www.sec.gov/enforcement-litigation/litigation-releases/rss",
+   "group": "Регуляторы"
+  },
+  {
+   "name": "CFTC",
+   "url": "https://www.cftc.gov/RSS/RSSGP/rssgp.xml",
+   "group": "Регуляторы"
+  },
+  {
+   "name": "US DOJ",
+   "url": "https://www.justice.gov/news/rss",
+   "group": "Регуляторы"
+  }
+ ],
+ "sites": [
+  {
+   "name": "DEX Screener",
+   "url": "https://dexscreener.com",
+   "group": "Проверка токена"
+  },
+  {
+   "name": "RugCheck",
+   "url": "https://rugcheck.xyz",
+   "group": "Проверка токена"
+  },
+  {
+   "name": "GoPlus",
+   "url": "https://gopluslabs.io",
+   "group": "Проверка токена"
+  },
+  {
+   "name": "Honeypot.is",
+   "url": "https://honeypot.is",
+   "group": "Проверка токена"
+  },
+  {
+   "name": "Token Sniffer",
+   "url": "https://tokensniffer.com",
+   "group": "Проверка токена"
+  },
+  {
+   "name": "De.Fi Scanner",
+   "url": "https://de.fi/scanner",
+   "group": "Проверка токена"
+  },
+  {
+   "name": "Bubblemaps",
+   "url": "https://bubblemaps.io",
+   "group": "Проверка токена"
+  },
+  {
+   "name": "Arkham",
+   "url": "https://intel.arkm.com",
+   "group": "Кошельки и инсайдеры"
+  },
+  {
+   "name": "Nansen",
+   "url": "https://www.nansen.ai",
+   "group": "Кошельки и инсайдеры"
+  },
+  {
+   "name": "GMGN",
+   "url": "https://gmgn.ai",
+   "group": "Кошельки и инсайдеры"
+  },
+  {
+   "name": "Solscan",
+   "url": "https://solscan.io",
+   "group": "Кошельки и инсайдеры"
+  },
+  {
+   "name": "Etherscan",
+   "url": "https://etherscan.io",
+   "group": "Кошельки и инсайдеры"
+  },
+  {
+   "name": "BscScan",
+   "url": "https://bscscan.com",
+   "group": "Кошельки и инсайдеры"
+  },
+  {
+   "name": "BaseScan",
+   "url": "https://basescan.org",
+   "group": "Кошельки и инсайдеры"
+  },
+  {
+   "name": "Dune",
+   "url": "https://dune.com",
+   "group": "Кошельки и инсайдеры"
+  },
+  {
+   "name": "CoinGecko",
+   "url": "https://www.coingecko.com",
+   "group": "Данные рынка"
+  },
+  {
+   "name": "CoinMarketCap",
+   "url": "https://coinmarketcap.com",
+   "group": "Данные рынка"
+  },
+  {
+   "name": "GeckoTerminal",
+   "url": "https://www.geckoterminal.com",
+   "group": "Данные рынка"
+  },
+  {
+   "name": "DefiLlama",
+   "url": "https://defillama.com",
+   "group": "Данные рынка"
+  },
+  {
+   "name": "Birdeye",
+   "url": "https://birdeye.so",
+   "group": "Данные рынка"
+  },
+  {
+   "name": "Token Unlocks",
+   "url": "https://tokenomist.ai",
+   "group": "Данные рынка"
+  }
+ ]
+}
