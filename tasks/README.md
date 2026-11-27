@@ -9,7 +9,7 @@ Bootstrap [#12](https://github.com/aintusing/my-project/pull/12) слит squash
 
 | Задача | Роль | Issue | Scope реализации (плюс собственный task-файл) | Состояние | Ветка | PR |
 | --- | --- | --- | --- | --- | --- | --- |
-| [R01: точная копия worldmonitor](task-r01.md) | claude-1 | [#9](https://github.com/aintusing/my-project/issues/9) | `app/`, `ATTRIBUTION.md` | Starting; PR пока не опубликован | `task/r01-worldmonitor-copy` | — |
+| [R01: точная копия worldmonitor](task-r01.md) | claude-1 | [#9](https://github.com/aintusing/my-project/issues/9) | `app/`, `ATTRIBUTION.md` | Draft; загрузка upstream objects, копия ещё не закоммичена | `task/r01-worldmonitor-copy` | [#20](https://github.com/aintusing/my-project/pull/20) |
 | [R02: SQLite и API](task-r02.md) | claude-2 | [#10](https://github.com/aintusing/my-project/issues/10) | `catalog/db/`, `radar/api/`, `docs/API.md`, `tests/test_catalog_db.py`, `tests/test_api.py` | Starting; PR пока не опубликован | `task/r02-catalog-api` | — |
 | [R03: интеграция графа](task-r03.md) | claude-3 | [#11](https://github.com/aintusing/my-project/issues/11) | UI/demo/vendor и integration-тесты; точные пути в #11 | Ждёт #18/#19; draft #13 сохраняется | `task/r03-offline-graph` | [#13](https://github.com/aintusing/my-project/pull/13) |
 | [R03A: модель](task-r03a.md) | claude-3 | [#18](https://github.com/aintusing/my-project/issues/18) | `graph/model.js`, `graph/fixture.js`, `graph/package.json`, `graph/test/model.test.js` | Готова после публикации task-файла; извлечь существующий код | `task/r03a-model` | — |
