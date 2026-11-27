@@ -11,7 +11,7 @@ Bootstrap [#12](https://github.com/aintusing/my-project/pull/12) слит squash
 | --- | --- | --- | --- | --- | --- | --- |
 | [R01: точная копия worldmonitor](task-r01.md) | claude-1 | [#9](https://github.com/aintusing/my-project/issues/9) | `app/`, `ATTRIBUTION.md` | Starting; PR пока не опубликован | `task/r01-worldmonitor-copy` | — |
 | [R02: SQLite и API](task-r02.md) | claude-2 | [#10](https://github.com/aintusing/my-project/issues/10) | `catalog/db/`, `radar/api/`, `docs/API.md`, `tests/test_catalog_db.py`, `tests/test_api.py` | Starting; PR пока не опубликован | `task/r02-catalog-api` | — |
-| [R03: автономный граф](task-r03.md) | claude-3 | [#11](https://github.com/aintusing/my-project/issues/11) | `graph/` | Draft; пока только отметка старта | `task/r03-offline-graph` | [#13](https://github.com/aintusing/my-project/pull/13) |
+| [R03: автономный граф](task-r03.md) | claude-3 | [#11](https://github.com/aintusing/my-project/issues/11) | `graph/` | Draft; реализация есть, 9 unit-тестов прошли; замечания ревью открыты | `task/r03-offline-graph` | [#13](https://github.com/aintusing/my-project/pull/13) |
 | [R04A](task-r04a.md) | claude-1 | [#14](https://github.com/aintusing/my-project/issues/14) | `docs/WM_AUDIT.md` | Ждёт #9 и публикацию task-файла | `task/r04a-startup-audit` | — |
 | [R05A](task-r05a.md) | claude-2 | [#15](https://github.com/aintusing/my-project/issues/15) | `docs/decisions/0003-scoring-v2.md`, `docs/SCORING.md` | Готова после публикации task-файла | `task/r05a-scoring-decision` | — |
 | [R09A](task-r09a.md) | claude-3 | [#16](https://github.com/aintusing/my-project/issues/16) | `docs/DEMO_PLAN.md` | Готова после публикации task-файла | `task/r09a-demo-plan` | — |
