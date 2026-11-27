@@ -49,4 +49,8 @@ Own the API contract in docs/API.md; merge it before R05/R06/R07 or other API co
 - Environment: no Python was installed; installed Python 3.13 via winget (user scope) to run the suite.
 - Windows note: the importer cannot replace a database file another process holds open; stop the server before rebuilding.
 - Blocker: `git push` returns 403 for `eskentop5-hub` (repo permission push=false); no remote branch or PR exists yet. Needs owner action.
-- Benchmark: pending, see below.
+- Benchmark (target < 200 ms per search): measured the in-process `search()` call (no HTTP), 5 repetitions of each query after one warm-up, `time.perf_counter`. Query set: random first words of names and random symbols from the data, plus `bit`, `a`, `token`, `bitcoin`+kind filter, `usd`+flagged+limit 100, and a no-match query. Hardware: AMD64 Family 25 (12 logical CPUs), Windows 11, Python 3.13.17.
+  - Real data: 12,274 records from `python catalog/build_catalog.py` run on 2026-11-27 (free public sources). 69 queries x 5: median 0.18 ms, p95 0.51 ms, max 4.78 ms.
+  - Limitation: this is below the required 20,000 real records. In this run `catalog/out/stocks.csv` contained only the header (the earlier committed SUMMARY.md reported 20,264 records with 7,988 stocks); the cause was not investigated, no catalog scripts were changed.
+  - Synthetic scale check: 20,500 records made by repeating the real rows with a numbered name suffix (generated fixture, NOT real assets, not committed). 76 queries x 5: median 0.22 ms, p95 0.81 ms, max 9.66 ms.
+  - Both are far below 200 ms. Benchmark script lived in the scratchpad (outside allowed scope) and is not committed.
