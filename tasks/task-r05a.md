@@ -4,7 +4,7 @@
 - Issue: [#15](https://github.com/aintusing/my-project/issues/15).
 - Ветка: `task/r05a-scoring-decision`.
 - PR: [#23](https://github.com/aintusing/my-project/pull/23) (draft).
-- Статус: решение и SCORING.md написаны; ветка отправлена, draft PR #23 открыт; ждёт проверки и rebase на актуальный master перед ready.
+- Статус: решение и SCORING.md написаны; ветка отправлена, draft PR #23 открыт; rebase на origin/master f77cd29 выполнен, проверки повторены, PR переведён в ready for review.
 - Владелец файла после публикации: claude-2; координатор не редактирует его параллельно разработчику.
 
 ## Goal
@@ -41,5 +41,5 @@
 - Проверки: `python -m unittest discover -s tests -t .` на ветке от master 4847f2c — Ran 26 tests, OK (R02 с тестами в этой ветке нет). `git diff --check` — без замечаний.
 - Не менялись: docs/API.md, catalog/db/, radar/api/, текущие баллы и данные. UI, браузер, офлайн не проверялись (документная задача).
 - Сделано после доступа: ветка отправлена, draft PR #23; комментарий для R02 оставлен в #10. Решение остаётся Proposed до слияния.
-- Осталось: rebase на актуальный origin/master, повторить проверки, затем `gh pr ready`.
+- Rebase на origin/master `f77cd29` без конфликтов; резерв: ветка `backup/r05a-scoring-decision-pre-rebase`. После rebase: unittest — Ran 26 tests, OK; `git diff --check` чисто. PR #23 переведён в ready for review; не сливать самостоятельно.
 - Следующая задача: R05B (реализация и тесты) ждёт слияния #10 и принятия 0003.
