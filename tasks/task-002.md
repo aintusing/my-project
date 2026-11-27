@@ -1,3 +1,5 @@
+> RETIRED 2026-11-27 by explicit owner approval. Counter Issues #2/#3/#4/#6 and PR #7 are closed; Radar decision 0002 supersedes this assignment. Historical instructions below are inactive: do not resume work or open a replacement PR. All branches are preserved. See tasks/README.md for current assignments.
+
 # Task 002: Responsive counter styling
 
 - Assigned agent: `claude-2` (member using Claude Code; GitHub username unconfirmed).
