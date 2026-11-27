@@ -4,7 +4,7 @@ Bootstrap: [PR #12](https://github.com/aintusing/my-project/pull/12) merged at `
 
 - Assigned agent: `claude-2`; label `agent:claude-2`.
 - GitHub Issue: [#10](https://github.com/aintusing/my-project/issues/10).
-- Status: implementation, tests, docs/API.md and benchmark done; branch pushed, draft PR #22 open; rebase on current origin/master and re-run checks before ready.
+- Status: implementation, tests, docs/API.md and benchmark done; branch pushed, draft PR #22 open; rebased onto origin/master f77cd29 (no conflicts, backup branch `backup/r02-catalog-api-pre-rebase`), checks re-run (Ran 38 tests, OK; `git diff --check` clean), PR marked ready for review; do not self-merge.
 - Branch: `task/r02-catalog-api` (create from synchronized master).
 - Pull Request: [#22](https://github.com/aintusing/my-project/pull/22) (draft).
 - Dependencies: Radar baseline PR #8 merged at `3ca1074`; wave-one bootstrap PR #12 merged; `blocked` removed by Codex.
