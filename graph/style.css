@@ -1,0 +1,22 @@
+* { box-sizing: border-box; }
+body { margin: 0; height: 100vh; display: flex; flex-direction: column; background: #0d1117; color: #e6edf3; font: 14px/1.4 system-ui, sans-serif; }
+header { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; padding: 8px 12px; }
+h1 { font-size: 18px; margin: 0; }
+p { margin: 0; }
+.rg { flex: 1; min-height: 0; display: grid; grid-template: auto minmax(0, 1fr) / minmax(0, 1fr) 280px; }
+.rg-bar { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 12px; }
+.rg select, .rg input, button { background: #161b22; color: inherit; border: 1px solid #30363d; border-radius: 6px; padding: 7px 10px; font: inherit; max-width: 100%; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid #58a6ff; outline-offset: 2px; }
+.rg-tools { display: flex; gap: 8px; }
+.rg-stage { position: relative; overflow: hidden; min-width: 0; min-height: 0; }
+.rg-stage canvas { display: block; touch-action: none; }
+.rg-stage > canvas:focus-visible { outline-offset: -2px; }
+.rg-panel { overflow: auto; padding: 0 12px 12px; border-left: 1px solid #30363d; overflow-wrap: anywhere; }
+.rg-panel h2 { font-size: 16px; }
+.rg-panel ul { list-style: none; padding: 0; }
+.rg-panel li button { width: 100%; text-align: left; margin-bottom: 4px; }
+@media (max-width: 700px) {
+  .rg { grid-template: auto minmax(0, 3fr) minmax(0, 2fr) / minmax(0, 1fr); }
+  .rg-panel { border-left: 0; border-top: 1px solid #30363d; }
+}
