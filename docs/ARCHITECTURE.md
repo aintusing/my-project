@@ -1,15 +1,21 @@
 # Architecture
 ## What the system does
-The project is building a single-page click counter using plain HTML, CSS, and JavaScript, without runtime dependencies or a backend. At the coordination baseline, master has workflow documentation only; HTML exists on an unmerged branch.
+Radar shows crypto, memecoin and stock assets by sphere, marks what is significant,
+interesting or dangerous with the reasons, and draws their links as a 3D graph.
 ## Main parts
-| Folder | What it does | Notes |
+| Folder | What it does | State |
 | --- | --- | --- |
-| `index.html` (pending #2) | Semantic page and DOM contract | Merge before CSS/JS work |
-| `style.css` (pending #3) | Responsive presentation | claude-2 |
-| `script.js` (pending #4) | Session-only counter behavior | claude-3 |
-| `tasks/` | Assignments, dependencies, durable handoffs | Paired with GitHub Issues |
-| `docs/decisions/` | Accepted technical decisions | Read before implementation |
+| `radar/`, `tests/` | Token checks, news, Telegram, SEC filings | Prototype exists |
+| `catalog/` | Builds the source catalog, scores, spheres, graph page | Scripts exist; data is generated |
+| `app/` | Full copy of worldmonitor (UI base) | Planned, R01 |
+| `radar/api/`, `catalog/db/` | Local search and data API | Planned, R02 |
+| `graph/` | Offline 3D graph module | Planned, R03 |
+| `tasks/` | Assignments, dependencies, durable handoffs | Still describes the old counter until Codex updates it |
 ## How the parts talk to each other
-Issue #2 establishes `#counter` (initial `0`, `aria-live="polite"`), native `#increment-button`, `./style.css`, and deferred `./script.js`. This contract remains pending until HTML merges. CSS and JS then develop independently; JS uses `textContent` and reload resets the count. No persistence, external services, or package setup is assigned.
+Planned: catalog scripts produce files, SQLite indexes them, a local API on 127.0.0.1
+serves the app. The API contract is written in `docs/API.md` and merged before UI work
+depends on it.
 
-Decision 0001 requires significant technical decisions to be recorded through PRs. The coordinator updates this document after feature merges to reflect actual implementation.
+Decision 0001 requires significant technical decisions to be recorded through PRs; the
+product itself is described in decision 0002. The coordinator updates this document after
+feature merges to reflect actual implementation.

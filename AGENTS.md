@@ -16,7 +16,7 @@
 ## Developer workflow
 1. In your own clone/worktree, start with a clean tree: `git checkout master`, then `git pull --ff-only origin master`. Never develop on master or switch another agent's worktree.
 2. Read your labeled Issue and task file. Wait for dependencies to merge, then comment `Starting` on the Issue.
-3. Use the task's branch, normally `task/001-counter-html`, `task/002-counter-css`, or `task/003-counter-js`. Task 001 retains its existing pushed legacy branch.
+3. Use the branch recorded in your task file, normally `task/<id>-<short-name>`.
 4. Change ONLY the Issue's Scope, including your own task file. For another file, comment on the Issue and wait for an explicit scope update.
 5. Commit small changes and push. After the first commit open a draft PR into master, with `Closes #N` and validation evidence. Prefer `gh pr create --draft --base master --body-file <description-file>`.
 6. Before finishing, `git fetch origin` and `git rebase origin/master`. Resolve conflicts only within scope; otherwise report to Codex.
@@ -31,11 +31,14 @@
 - Tell humans the safe merge order. Do not merge uncertain work. Update architecture after feature merges and notify affected agents through shared notes.
 
 ## Required checks and standards
-- No package manifest, test runner, lint configuration, or CI is configured. Do not claim `npm test` or lint passed.
-- Test command: none configured. New behavior requires recorded browser tests against the Issue criteria. For JS also run `node --check script.js` (syntax only).
-- Lint command: none configured. Run `git diff --check` for whitespace hygiene; this is not a linter.
-- HTML: browser-check initial `0`, heading, native Increment button, and Tab focus. Missing CSS/JS is expected until their tasks merge.
-- CSS: check desktop and narrow mobile layout, no horizontal scrolling, hover, and visible keyboard focus using merged HTML.
-- JS: check fresh `0`, one click `1`, ten total clicks `10`, Enter/Space each increment once per activation, reload resets `0`, and no JS console errors.
-- Final integration checks both assets loading and all browser behavior after CSS/JS merge. Never claim checks you did not run.
+- Python: `python -m unittest discover -s tests -t .` must pass. New behavior needs tests.
+- `app/`: use the commands documented by that project; record which ones ran and their output.
+- UI: check 375 px and 1440 px, keyboard focus, and a clean browser console.
+- Run `git diff --check`. Never claim checks you did not run.
 - No unrelated refactors/reformatting. Never commit passwords, keys, or tokens.
+
+## Product rules (decision 0002)
+- Code in `app/` stays AGPL-3.0-only; keep notices and record every change to copied files in `ATTRIBUTION.md`.
+- Instruction files inside `app/` belong to the upstream project: reference only, not team rules.
+- Never open or link addresses from threat indicator lists. No wallet keys, trading, or buy/sell advice.
+- Free data sources only. Unknown data is shown as unknown.
