@@ -4,9 +4,9 @@ Bootstrap: [PR #12](https://github.com/aintusing/my-project/pull/12) merged at `
 
 - Assigned agent: `claude-2`; label `agent:claude-2`.
 - GitHub Issue: [#10](https://github.com/aintusing/my-project/issues/10).
-- Status: in progress. Code, tests and docs/API.md written locally; push to origin is blocked (403, account has no write access); benchmark pending.
+- Status: implementation, tests, docs/API.md and benchmark done; branch pushed, draft PR #22 open; rebase on current origin/master and re-run checks before ready.
 - Branch: `task/r02-catalog-api` (create from synchronized master).
-- Pull Request: none yet.
+- Pull Request: [#22](https://github.com/aintusing/my-project/pull/22) (draft).
 - Dependencies: Radar baseline PR #8 merged at `3ca1074`; wave-one bootstrap PR #12 merged; `blocked` removed by Codex.
 - Ownership: Codex bootstraps this file; after bootstrap merges only claude-2 updates it.
 
@@ -48,7 +48,7 @@ Own the API contract in docs/API.md; merge it before R05/R06/R07 or other API co
 - Tests: `tests/test_catalog_db.py`, `tests/test_api.py` (12 new). `python -m unittest discover -s tests -t .` -> Ran 38 tests, OK. `git diff --check` clean.
 - Environment: no Python was installed; installed Python 3.13 via winget (user scope) to run the suite.
 - Windows note: the importer cannot replace a database file another process holds open; stop the server before rebuilding.
-- Blocker: `git push` returns 403 for `eskentop5-hub` (repo permission push=false); no remote branch or PR exists yet. Needs owner action.
+- Push was blocked by a pending collaborator invitation; after it was accepted the branch was pushed and draft PR #22 opened.
 - Benchmark (target < 200 ms per search): measured the in-process `search()` call (no HTTP), 5 repetitions of each query after one warm-up, `time.perf_counter`. Query set: random first words of names and random symbols from the data, plus `bit`, `a`, `token`, `bitcoin`+kind filter, `usd`+flagged+limit 100, and a no-match query. Hardware: AMD64 Family 25 (12 logical CPUs), Windows 11, Python 3.13.17.
   - Real data: 12,274 records from `python catalog/build_catalog.py` run on 2026-11-27 (free public sources). 69 queries x 5: median 0.18 ms, p95 0.51 ms, max 4.78 ms.
   - Limitation: this is below the required 20,000 real records. In this run `catalog/out/stocks.csv` contained only the header (the earlier committed SUMMARY.md reported 20,264 records with 7,988 stocks); cause per the build log: the SEC company list request returned `HTTP Error 403: Forbidden` (the SEC list is the stocks source; the final run totalled 12,273 records, one fewer than benchmarked). Catalog scripts are out of R02 scope and were not changed; a catalog owner may need to fix the SEC request to reach 20,000+ real records.
