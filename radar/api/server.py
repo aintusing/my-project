@@ -20,7 +20,8 @@ def make_handler(db_path):
             self.send_header("Content-Type", "application/json; charset=utf-8")
             self.send_header("Content-Length", str(len(data)))
             self.end_headers()
-            self.wfile.write(data)
+            if self.command != "HEAD":  # на HEAD тело не отправляется
+                self.wfile.write(data)
 
         def do_GET(self):
             url = urlsplit(self.path)
@@ -49,7 +50,7 @@ def make_handler(db_path):
         def deny(self):
             self.reply(405, {"error": "method_not_allowed"})
 
-        do_POST = do_PUT = do_DELETE = do_PATCH = deny
+        do_POST = do_PUT = do_DELETE = do_PATCH = do_HEAD = do_OPTIONS = deny
 
         def log_message(self, *args):
             pass

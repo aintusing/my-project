@@ -5,7 +5,7 @@ import tempfile
 import unittest
 
 from catalog.db.build import COLUMNS, MissingInput, build
-from radar.api.search import BadRequest, facets, search
+from radar.api.search import BadRequest, DatabaseUnavailable, facets, search
 
 ROWS = [
     {"kind": "coin", "name": "Bitcoin", "symbol": "BTC", "sphere": "Монеты", "tier": "S", "significance": "99",
@@ -77,6 +77,18 @@ class CatalogDbTests(unittest.TestCase):
             self.assertEqual(self.db.execute("SELECT COUNT(*) FROM assets").fetchone()[0], len(ROWS))
         self.assertEqual(self.names(kind="coin' OR '1'='1"), [])
         self.assertEqual(self.names(q="evil"), ["Evil'; DROP TABLE assets;--"])
+
+    def test_missing_schema_is_unavailable_not_bad_request(self):
+        for create in ("", "CREATE TABLE assets(id INTEGER PRIMARY KEY)"):  # пустая база; есть assets, нет fts
+            db = sqlite3.connect(":memory:")
+            self.addCleanup(db.close)
+            if create:
+                db.execute(create)
+            for call in (lambda: search(db, {"q": "bitcoin"}), lambda: search(db, {}), lambda: facets(db)):
+                with self.assertRaises(DatabaseUnavailable):
+                    call()
+        with self.assertRaises(BadRequest):  # при целой схеме неверный запрос остаётся 400
+            search(self.db, {"limit": "0"})
 
     def test_rebuild_replaces_and_missing_input(self):
         self.db.close()  # Windows не даёт заменить файл, открытый другим соединением

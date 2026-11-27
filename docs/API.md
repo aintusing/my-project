@@ -17,9 +17,9 @@ python -m radar.api                      # http://127.0.0.1:8765
 - Rebuild: run the importer again. It writes `<db>.tmp` and atomically replaces the database, so a
   failed import never damages the old one. Stop the server first on Windows if it holds the file.
 - `data/` is gitignored; the database is never committed. Source scripts and `catalog/out/` are not modified.
-- If the database file is missing the server answers `503 database_unavailable`.
+- If the database file is missing, is not a SQLite file, or lacks the `assets`/`assets_fts` tables (not built yet), every data endpoint answers `503 database_unavailable`, never `400`. `400` is only for invalid request parameters.
 
-## Endpoints (GET only; other methods return 405)
+## Endpoints (GET only; every other method, including HEAD and OPTIONS, returns `405` with a JSON body; HEAD has no body)
 
 ### `GET /search`
 | Parameter | Meaning |
