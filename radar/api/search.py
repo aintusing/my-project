@@ -14,6 +14,16 @@ class BadRequest(ValueError):
     pass
 
 
+class DatabaseUnavailable(sqlite3.Error):
+    """База не собрана или без нужной схемы: это 503, а не ошибка запроса."""
+
+
+def check_schema(db):
+    names = {row[0] for row in db.execute("SELECT name FROM sqlite_master WHERE name IN ('assets', 'assets_fts')")}
+    if names != {"assets", "assets_fts"}:
+        raise DatabaseUnavailable("в базе нет таблиц assets/assets_fts")
+
+
 def fts_query(text):
     """Безопасный FTS5-запрос: каждое слово в кавычках, у последнего префиксный поиск."""
     words = re.findall(r"\w+", text)
@@ -36,7 +46,8 @@ def integer(value, name, low, high, default):
 
 def search(db, params):
     """params: dict строк. Возвращает {'total', 'limit', 'offset', 'results'}."""
-    query = (params.get("q") or "").strip()
+    check_schema(db)
+    query =(params.get("q") or "").strip()
     if len(query) > MAX_QUERY:
         raise BadRequest(f"q: не длиннее {MAX_QUERY} символов")
     limit = integer(params.get("limit"), "limit", 1, MAX_LIMIT, 20)
@@ -64,6 +75,8 @@ def search(db, params):
         rows = db.execute(f"SELECT {', '.join('a.' + f for f in FIELDS)} FROM assets a {join} {clause} "
                           f"{order} LIMIT ? OFFSET ?", args + [limit, offset]).fetchall()
     except sqlite3.OperationalError as error:
+        if "fts5" not in str(error).lower():  # блокировка, I/O, повреждение: не вина запроса
+            raise
         raise BadRequest(f"q: запрос не принят ({error})") from None
     results = []
     for row in rows:
@@ -75,5 +88,6 @@ def search(db, params):
 
 
 def facets(db):
+    check_schema(db)
     return {name: [r[0] for r in db.execute(f"SELECT DISTINCT {name} FROM assets WHERE {name} IS NOT NULL ORDER BY 1")]
             for name in EXACT}

@@ -73,6 +73,36 @@ class ApiTests(unittest.TestCase):
         import inspect
         self.assertEqual(inspect.signature(server.serve).parameters["host"].default, "127.0.0.1")
 
+    def test_head_and_options_are_405_json(self):
+        for method in ("HEAD", "OPTIONS", "PUT", "DELETE", "PATCH"):
+            request = urllib.request.Request(self.base + "/search", method=method)
+            with self.assertRaises(urllib.error.HTTPError, msg=method) as caught:
+                urllib.request.urlopen(request)
+            error = caught.exception
+            self.assertEqual(error.code, 405, method)
+            self.assertIn("application/json", error.headers["Content-Type"], method)
+            if method != "HEAD":
+                self.assertEqual(json.load(error)["error"], "method_not_allowed", method)
+            else:
+                self.assertEqual(error.read(), b"")
+
+    def test_unusable_database_gives_503_not_400(self):
+        import sqlite3
+        empty = Path(self.tmp.name) / "empty.sqlite"
+        sqlite3.connect(empty).close()  # файл есть, схемы нет
+        broken = Path(self.tmp.name) / "broken.sqlite"
+        broken.write_bytes(b"not a sqlite file" * 20)
+        for path in (empty, broken):
+            server = serve(path, "127.0.0.1", 0)
+            threading.Thread(target=server.serve_forever, daemon=True).start()
+            self.addCleanup(server.server_close)
+            self.addCleanup(server.shutdown)
+            for url in ("/search?q=bitcoin", "/search", "/facets"):
+                with self.assertRaises(urllib.error.HTTPError, msg=f"{path.name} {url}") as caught:
+                    urllib.request.urlopen(f"http://127.0.0.1:{server.server_address[1]}{url}")
+                self.assertEqual(caught.exception.code, 503, f"{path.name} {url}")
+                self.assertEqual(json.load(caught.exception)["error"], "database_unavailable")
+
     def test_missing_database_gives_503(self):
         missing = serve(Path(self.tmp.name) / "none.sqlite", "127.0.0.1", 0)
         threading.Thread(target=missing.serve_forever, daemon=True).start()
