@@ -1,0 +1,31 @@
+.rg-panel p.rg-big { font-size: 34px; font-weight: 800; color: var(--accent); margin: 0; font-variant-numeric: tabular-nums; }
+.rg-panel ul.rg-datasets li { display: flex; align-items: center; gap: 8px; padding: 3px 0; font-size: 13px; }
+.rg-datasets li span { flex: 1; }
+.rg-datasets i, .rg-feed i { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+.rg-spark { display: flex; align-items: flex-end; gap: 2px; height: 56px; margin: 10px 0; }
+.rg-spark i { flex: 1; background: var(--accent); border-radius: 2px 2px 0 0; opacity: .8; }
+.rg .rg-panel ul.rg-feed li button { align-items: center; justify-content: flex-start; font-size: 12px; }
+.rg-feed li span { flex: 1; }
+.rg-layers fieldset select { width: 100%; margin-bottom: 4px; }
+.rg-panel .rg-browse select, .rg-panel .rg-activity select { width: 100%; margin-bottom: 6px; }
+.rg-panel .rg-browse ol { margin: 0; padding: 0 0 0 0; list-style: none; counter-reset: rank; }
+.rg-panel .rg-browse li { counter-increment: rank; }
+.rg-panel .rg-browse li button::before { content: counter(rank) "."; opacity: .55; min-width: 2.4em; }
+.rg-panel .rg-browse li button span { flex: 1; }
+.rg .rg-panel .rg-panel-tabs { display: flex; gap: 4px; position: sticky; top: 0; z-index: 3; padding: 8px 0; background: var(--card); overflow-x: auto; }
+.rg .rg-panel .rg-panel-tabs button { flex: 1; padding: 6px 8px; font-size: 12px; }
+.rg .rg-panel .rg-panel-tabs button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 700; }
+.rg-panel .rg-news input, .rg-panel .rg-news select { width: 100%; margin-bottom: 6px; }
+.rg-panel ul.rg-headlines li { padding: 8px 0; border-top: 1px solid var(--edge); }
+.rg-headlines small, .rg-headlines span { display: block; }
+.rg-headlines small { font-weight: 500; font-size: 11px; white-space: normal; }
+.rg-panel ul.rg-sources li { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; padding: 2px 0; }
+.rg-sources li.rg-off { opacity: .55; }
+@media (max-width: 760px) {
+  /* On phones the page scrolls, so the map and the panel both get real height. */
+  body { display: block; height: auto; }
+  .rg { display: flex; flex-direction: column; }
+  .rg-bar { max-height: none; }
+  .rg-stage { flex: none; height: 68dvh; }
+  .rg-panel { order: 1; overflow: visible; }
+}

@@ -4,10 +4,10 @@ Bootstrap: [PR #12](https://github.com/aintusing/my-project/pull/12), branch tas
 
 - Assigned agent: `claude-3`; label `agent:claude-3`.
 - GitHub Issue: [#11](https://github.com/aintusing/my-project/issues/11).
-- Status: blocked until the wave-one bootstrap PR is merged; not started.
+- Status: one PR #13 reviewed in four blocks (coordinator decision); draft until the merge gates close.
 - Branch: `task/r03-offline-graph` (create from synchronized master).
-- Pull Request: none yet.
-- Dependencies: Radar baseline PR #8 merged at `3ca1074`; wave-one bootstrap PR #12 pending.
+- Pull Request: [#13](https://github.com/aintusing/my-project/pull/13), draft.
+- Dependencies: #8 and bootstrap #12 merged (`1419df4`).
 - Ownership: Codex bootstraps this file; after bootstrap merges only claude-3 updates it.
 
 ## Goal
@@ -39,4 +39,38 @@ Read AGENTS.md, docs/ARCHITECTURE.md, accepted decisions, tasks/README.md, tasks
 Read catalog/build_graph.py as reference only; do not modify catalog/, app/, radar/, root dependencies/config or other task files. R03 has no dependency on R01 or R02: document its standalone interface locally; API wiring and app integration wait for later R08.
 
 ## Implementation notes and handoff
-Not started. Record actual commands/results, limitations, implementation choices and downstream handoff here when working. GitHub Issue scope is authoritative; request explicit scope changes before editing other paths.
+Coordinator decision (2026-11-27): one PR #13, sequential review of A core, B Earth/data,
+C events/sources, D analysis; merge only as a whole. The earlier split #18/#19 is cancelled and is
+not a dependency. Full scope is `graph/` (blocks listed in the claude-3 comment on head `00b0ca5`)
+plus this file. The owner's chat requests behind it: globe and flat map, real data, events,
+worldmonitor layers, analysis, calmer design, product name Money Bansho.
+
+Checks (Windows 11, Intel UHD, built-in browser, pixel ratio 1.5):
+- `cd graph && node --test` on the committed test files: 59 passed.
+- `python -m unittest discover -s tests -t .`: 26 passed. Fresh clone with `core.autocrlf=true`: 59 passed.
+- FPS at 1440x900: synthetic 3D graph 5000 nodes / 9959 links 74.3 (10 s, links only for the selection
+  above 2000 nodes); globe with 15451 nodes and events 54.1 (8 s).
+- Console and CSP: fresh tab, all four views, five panel tabs, three color modes: no console messages,
+  no page errors, no CSP violations, all requests local.
+- Contrast (computed text/background ratio, 1084 text elements per theme): night min 5.24, paper min 5.2,
+  no failures. Moss reported one pressed view button at 2.71 during a color transition; its settled
+  colors are dark text on ivory.
+- Keyboard (real key presses): 70 Tab stops all visible with a focus outline; view switch, map pan and
+  zoom, opening a card, back button and layer panel toggle work. Map markers are selected through search
+  and lists, not directly.
+- WebGL disabled (stubbed `getContext`): globe, map and scheme work, the 3D graph tab is absent.
+- 375 px and 1440 px: no horizontal scroll.
+
+Open merge gates:
+- Physical network disconnect test (not performed: would change system settings).
+- Redistribution rights for DefiLlama, CoinGecko, Nasdaq, publisher headlines, military base and other
+  worldmonitor datasets. Needs a coordinator/owner decision: confirm, or drop them from the snapshot.
+- Rebase on `origin/master` before marking ready.
+- China/Europe sources requested by the owner are outside the approved scope; not committed.
+
+### Owner requests after head 66dbde1
+Relayed by the owner: the coordinator allowed these. Please record it in Issue #11.
+Added: candle charts with explanations, readable 3D graph and scheme, lighter globe redraws,
+China/Europe events. `node --test` on graph files: 72 passed. Globe benchmark while moving at
+1440x900: 30.9 FPS; no redraws while idle. Redistribution rights for Binance candles and the new
+China/Europe sources are unverified (same open merge gate).
