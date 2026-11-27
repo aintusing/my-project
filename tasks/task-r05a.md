@@ -43,3 +43,5 @@
 - Сделано после доступа: ветка отправлена, draft PR #23; комментарий для R02 оставлен в #10. Решение остаётся Proposed до слияния.
 - Rebase на origin/master `f77cd29` без конфликтов; резерв: ветка `backup/r05a-scoring-decision-pre-rebase`. После rebase: unittest — Ran 26 tests, OK; `git diff --check` чисто. PR #23 переведён в ready for review; не сливать самостоятельно.
 - Следующая задача: R05B (реализация и тесты) ждёт слияния #10 и принятия 0003.
+- Ревью PR #23 (первый проход): уточнены обязательные поля и округление/k для trust, состояния при отсутствии observed_at и определение attention (null, если нет known), пример scores_v2 приведён к правилу состояний. Арифметика примеров 1/2/5 (70/28/56) пересчитана в Python.
+- Повторный rebase на origin/master `55ff19b` без конфликтов; резерв: `backup/r05a-scoring-decision-pre-rebase-2`. Проверки: unittest — Ran 26 tests, OK; `git diff --check` чисто. Документация 145 строк.
