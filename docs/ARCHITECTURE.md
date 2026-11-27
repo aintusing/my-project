@@ -19,3 +19,11 @@ depends on it.
 Decision 0001 requires significant technical decisions to be recorded through PRs; the
 product itself is described in decision 0002. The coordinator updates this document after
 feature merges to reflect actual implementation.
+
+## Team ownership
+Main Codex (`agent:codex`) is the sole coordinator. Claude-1/2/3 and codex-4 are developers
+with independent task branches and clone/worktrees. The roster and disjoint scopes live
+in `tasks/README.md`; codex-4 is registered in `tasks/agents/codex-4.md`.
+Its initial stock-source recovery changes the collector only, preserving CSV fields and
+the proposed R02 API contract. No unfinished app, API, graph or scoring component is
+declared integrated merely by registering an agent or running a trial integration.
