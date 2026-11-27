@@ -4,3 +4,4 @@
 - Read `tasks/README.md`, `tasks/coordinator.md`, and your task file.
 - Use `/next-task claude-N` to start and `/finish-task` to finish.
 - Make implementation decisions independently within scope; follow AGENTS.md for escalation conditions and PRs into `master`.
+- Main Codex is the sole coordinator. `codex-4` is a separate developer with label `agent:codex-4`; do not claim its Issues or edit its worktree/task file. Its role uses the same AGENTS.md workflow, not these Claude-specific command aliases.

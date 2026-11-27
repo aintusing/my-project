@@ -1,20 +1,21 @@
 # Agent Operating Rules
 
 ## Roles
-- Codex coordinates tasks, scope, PR reviews, and integration; it writes no feature code.
+- Main Codex (`agent:codex`, this coordinator session) is the sole coordinator for tasks, scope, PR reviews, and integration; it writes no feature code.
 - `claude-1` is the autonomous Claude developer; `claude-2` and `claude-3` are the other members using Claude Code. `claude-4` is reserved.
-- Developers take only Issues labeled with their own `agent:claude-N`. Labels identify roles, not GitHub accounts.
+- `codex-4` is an independent development agent, not a coordinator. It follows the same developer workflow, testing, reporting, and PR rules as the Claude developers; its profile is `tasks/agents/codex-4.md`.
+- Developers take only Issues labeled with their own role: `agent:claude-1`, `agent:claude-2`, `agent:claude-3`, or `agent:codex-4`. `agent:codex` is reserved for the main coordinator. Labels identify roles, not GitHub accounts.
 - Developers decide HOW to implement independently within scope, including routine fixes, tests, commits, pushes, and PR creation.
 
 ## Shared coordination
 - Read `docs/ARCHITECTURE.md`, accepted `docs/decisions/NNNN-*.md`, `tasks/README.md`, `tasks/coordinator.md`, and your task file before starting.
 - GitHub Issues define scope and acceptance. `tasks/` holds assignments, dependencies, status, and durable handoffs; keep both synchronized. No chat logs.
-- Codex owns the task overview and coordinator notes. Developers edit only their own task file and explicitly allowed implementation files.
+- Main Codex owns the task overview, agent registry, and coordinator notes. Developers edit only their own task file and explicitly allowed implementation files; they do not assign work to other agents or merge their own PRs.
 - Codex bootstraps all task files before developer work starts; afterward it must not edit a developer's task file concurrently.
 - Significant shared technical choices need a decision PR merged first. Never contradict an accepted decision: comment on the Issue, label `needs-decision`, and stop affected work.
 
 ## Developer workflow
-1. In your own clone/worktree, start with a clean tree: `git checkout master`, then `git pull --ff-only origin master`. Never develop on master or switch another agent's worktree.
+1. Start with a clean tree in your own independent clone/worktree and fetch origin. If master is available in that checkout, use `git checkout master` then `git pull --ff-only origin master`. If master belongs to another worktree, create your recorded task branch directly from fetched `origin/master`; do not switch the other worktree. Never develop on master.
 2. Read your labeled Issue and task file. Wait for dependencies to merge, then comment `Starting` on the Issue.
 3. Use the branch recorded in your task file, normally `task/<id>-<short-name>`.
 4. Change ONLY the Issue's Scope, including your own task file. For another file, comment on the Issue and wait for an explicit scope update.

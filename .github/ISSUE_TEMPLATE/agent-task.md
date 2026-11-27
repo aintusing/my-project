@@ -19,7 +19,7 @@ List observable results and required validation.
 List Issues/PRs that must merge first, or None.
 
 ## Agent
-Exactly one agent label: `agent:claude-N` or `agent:codex` (coordination only).
+Exactly one agent label: `agent:claude-1`, `agent:claude-2`, `agent:claude-3`, or `agent:codex-4` for development; `agent:codex` for the sole main coordinator (no feature code).
 
 ## Workflow
 Link the task file and branch. Follow AGENTS.md; commit/push and open a draft PR into master with `Closes #N`. Record checks and handoffs, then mark ready. Never merge your own PR.

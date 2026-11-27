@@ -11,9 +11,9 @@ Scope: graph/ и собственный tasks/task-r03.md; точная приё
 
 | Блок | Файлы внутри graph/ по отчёту автора | Проверка | Статус |
 | --- | --- | --- | --- |
-| A: ядро | model.js, views.js, scheme.js, radar-graph.js, palette.js, panel.js, browse.js, style.css, theme.css, index.html, demo.js, fixture.js, lib/, package.json, .gitattributes, README.md, tools/serve.py, test/model.test.js | Контракт, фильтры/поиск/соседи, lifecycle, vendor hash/лицензии, Windows checkout | Новая расширенная сборка не подтверждена координатором |
+| A: ядро | model.js, views.js, scheme.js, radar-graph.js, palette.js, panel.js, browse.js, style.css, theme.css, index.html, demo.js, fixture.js, lib/, package.json, .gitattributes, README.md, tools/serve.py, test/model.test.js | Контракт, фильтры/поиск/соседи, lifecycle, vendor hash/лицензии, Windows checkout | Общие 59 automated tests на 66dbde1 подтверждены; полный block/browser review ещё не завершён |
 | B: Земля и данные | earth.js, geo.js, fixtures/world.js, fixtures/snapshot.js, fixtures/layers.js, tools/build_snapshot.mjs, tools/build_layers.mjs, ATTRIBUTION.md, test/layers.test.js | Геометрия/связи, provenance/права, время снимка, synthetic/unknown | Часть прав не подтверждена автором |
-| C: события и источники | activity.js, activity.css, newsroom.js, fixtures/events.js, fixtures/events-extra.js, fixtures/sources.js, tools/build_events*.py, tools/build_sources.py, ATTRIBUTION-events.md, ATTRIBUTION-events-extra.md, ATTRIBUTION-sources.md, тесты | Происхождение/права, экранирование, локальность, отсутствующие файлы | Автор сообщил о 404 optional-файлов |
+| C: события и источники | activity.js, activity.css, newsroom.js, fixtures/events.js, fixtures/events-extra.js, fixtures/sources.js, tools/build_events*.py, tools/build_sources.py, ATTRIBUTION-events.md, ATTRIBUTION-events-extra.md, ATTRIBUTION-sources.md, тесты | Происхождение/права, экранирование, локальность, отсутствующие файлы | Автор сообщил об устранении 404 на 66dbde1; права ещё не подтверждены |
 | D: анализ | analytics.js, analytics.css, METHODOLOGY.md, test/analytics.test.js | Расчёты/методология, unknown/stale, ограничения, принятые контракты | Ждёт ревью; ADR 0003 пока Proposed |
 
 Порядок A → B → C → D, затем вся сборка. Прохождение блока не разрешает merge части PR.
@@ -23,11 +23,12 @@ Scope: graph/ и собственный tasks/task-r03.md; точная приё
 
 Автор сообщил 59/59 тестов при свежем checkout с autocrlf=true, чистый diff --check,
 26 Python-тестов, 74.3 FPS на 5000 узлах и 54.1 FPS на снимке 15451 узла.
-Это отчёт автора по 00b0ca5; координатор ещё не воспроизвёл новый расширенный head.
+Это исходный отчёт автора по 00b0ca5. В аудите 66dbde1 координатор подтвердил 59 graph tests,
+38 Python и clean whitespace в отдельной тестовой интеграции; browser/FPS не воспроизводились.
 Предыдущие 9 Node-тестов относятся к 10b8c0c и не подтверждают расширенную сборку.
 
-- Нужны физически отключённая сеть, полный keyboard-only проход, фокус/контраст.
-- Повторить 2D fallback без WebGL после добавления глобуса, проверить 375/1440 px.
+- Нужна физически отключённая сеть; новый keyboard/focus/contrast отчёт автора пока независимо не воспроизведён.
+- Автор повторил 2D fallback/375/1440; сохранить доказательства и проверить итоговый head перед merge.
 - Нужна clean console/CSP во всех режимах; 404 optional-событий не считать чистой консолью.
 - Подтвердить разрешённость включения библиотек, данных и заголовков в распространяемый снимок.
   До подтверждения данные можно исключить из распространяемого артефакта; право не предполагается.

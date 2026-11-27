@@ -1,5 +1,22 @@
 # Координация Radar
 
+## Команда и аудит
+- Главный Codex (`agent:codex`) — единственный координатор. Claude-1/2/3 и новый
+  codex-4 — разработчики с одинаковым AGENTS.md branch/testing/reporting/PR workflow.
+  Реестр: [agents/README.md](agents/README.md); профиль [codex-4](agents/codex-4.md).
+- codex-4 получает независимую R10 [#25](https://github.com/aintusing/my-project/issues/25):
+  catalog/build_catalog.py, tests/test_catalog_sources.py, docs/CATALOG_SOURCES.md,
+  tasks/task-r10.md. Нет пересечения с R02 catalog/db + radar/api, R03 graph/ или R01 app/.
+- #25 ждёт только merge регистрации из task/register-codex-4. После merge снять blocked,
+  создать отдельный worktree .coordination/codex-4-r10 и ветку task/r10-stock-source-recovery.
+  Разработчик не координирует команду и не сливает свой PR.
+- [Полный аудит](audits/2026-11-27.md): отдельная integration/audit-20261127,
+  без merge-коммита и master merge. 38 Python + 59 Node прошли; дополнительные
+  4 smoke-проверки дали 1 pass / 3 fail (HTTP-контракт #22). Интеграция не полностью зелёная.
+- Локальный отдельный worktree claude-1 подтверждён: staged 10822 app-файла ещё не push.
+  Для claude-2/3 отдельные remote branches подтверждены, физические clone/worktree запрошены
+  в #10/#11; без ответа их изоляцию нельзя объявить проверенной.
+
 ## Решение по R03
 - После комментария claude-3 по head 00b0ca5 выбран **один PR #13 с четырьмя блоками ревью**.
   Матрица и merge gates: [r03-review.md](r03-review.md).
@@ -23,19 +40,23 @@
   Сеть даёт early EOF; разработчик использует batched blob fetch с повторами.
   Заявлены полный upstream commit/tree и manifest 10822 файлов. Копия ещё не подтверждена.
   Предварительное gh pr diff/review выполнено; #14 ждёт фактического merge #9.
-- #10 claude-2: draft #22, head c4763f9. API/SQLite и 12 новых тестов опубликованы.
-  Полный diff прочитан. Автор заявил 38 passed; координатор пока не запускал этот head.
-  Реальный benchmark: 12274 записей; 20500 только synthetic. Требование 20000 реальных
-  записей ещё не выполнено: SEC ответил 403. Rebase/готовность ещё не завершены.
-- #15 claude-2: draft #23, head af610b4; ADR 0003 Proposed и SCORING.md.
+- #10 claude-2: draft #22, audited head eeeb147 после rebase, backup refs сохранены.
+  Полный diff прочитан; в общей тестовой сборке 38 Python прошли. Воспроизведены HEAD/OPTIONS
+  501 вместо 405 и schema-unavailable 400 вместо 503; нужны in-scope fixes и regression tests.
+  Реальные 12274 / synthetic 20500 явно разделены. Synthetic scale check допустим по исходному
+  acceptance; полнота реального stock-снимка — отдельное ограничение, переданное R10 codex-4.
+- #15 claude-2: draft #23, audited head a644804; ADR 0003 Proposed и SCORING.md.
   Полный diff прочитан; решение ещё не принято, реализация R05B не разрешена.
   Будущие observed_at/source не меняют API R02; freshness без timestamp — unknown.
-- #11 claude-3: draft #13, head 00b0ca5. Автор сообщил 59/59 graph tests, 26 Python,
-  чистый whitespace и FPS 74.3/54.1; это отчёт автора, не независимая проверка.
-  Старые 9 Node-тестов по 10b8c0c не подтверждают новый расширенный head.
-- Открыты gates #13: физический offline, полный keyboard/focus/contrast, повторный
-  WebGL fallback после глобуса, console/CSP во всех режимах, права на данные.
-  Optional 404 остаются ошибками console. До ready всё должно быть закрыто/исключено из артефакта.
+- #11 claude-3: draft #13, audited head 66dbde1. Координатор воспроизвёл 59/59 graph tests,
+  38 Python в совместной сборке и clean whitespace. Browser/FPS 74.3/54.1 — пока отчёт автора.
+  По новому отчёту исправлены optional 404 и проверены keyboard/contrast/fallback; независимо
+  эти browser-результаты не воспроизведены. Physical offline ещё не выполнен.
+- Права на часть данных #13 не подтверждены. Решение: исключить такие наборы/заголовки
+  из распространяемого snapshot, оставить код/synthetic/подтверждённые fixtures и проверить
+  degraded/offline режим. Это in-scope; новые CN/EU источники оформляются отдельно от #11.
+- API→graph не подключён: results→nodes, kind→group, scores/flags→meta и links нужны в R08.
+  Пока два модуля совместно проходят suites, но не образуют готовый app/API/graph сценарий.
 
 ## Очередь и зависимости
 - #14 R04A claude-1: docs/WM_AUDIT.md и свой task-файл. Опубликована, blocked до merge #9.
@@ -60,7 +81,7 @@
   Для документов UI/GPU-проверки не запускались; feature PR проверяются отдельно.
 - GitHub delete_branch_on_merge=false; ветки сохраняются. Ранее автоматически удалённые
   coordinator-ветки восстановлены: task/radar-wave-1 d64b22b, task/radar-next-wave 11c864e.
-- Рабочая ветка координатора task/r03-review-blocks создана от master f77cd29.
+- Рабочая ветка координатора task/register-codex-4 создана от master 55ff19b.
   Другие worktrees не переключались; посторонний untracked my-project/ исключён из коммитов.
 - AGPL notices/provenance сохраняются; данные unknown не выдумывать, платные источники
   и buy/sell советы исключены, threat-indicator адреса не открывать и не делать ссылками.
