@@ -97,3 +97,11 @@ as text. No threat-indicator addresses are included.
 The module is `AGPL-3.0-only`. See `ATTRIBUTION.md` (data sources), `lib/PROVENANCE.md`,
 `lib/THIRD_PARTY_LICENSES.txt`, `lib/LICENSE.3d-force-graph` and `lib/LICENSE.world-atlas`.
 Redistribution terms of the DefiLlama and CoinGecko snapshot data have not been verified.
+
+## Candles and readable views
+- **Candles** (`fixtures/candles.js`, built by `tools/build_candles.py`, see `ATTRIBUTION-candles.md`):
+  daily candles for 120 crypto assets, 20-day average, volume, markers for unusual days. The side panel
+  lists facts computed from candles, dated hacks and snapshot headlines; a shared date is not a cause.
+- **Graph** shows a connected subset (sphere hubs, chains, leading assets, plus the selection).
+- **Scheme** shows sphere circles; dots appear when zoomed. Every view has a "how to read" note.
+- Talk-heavy event datasets are off by default; large spots at country centers are often unlocated news.

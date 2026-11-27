@@ -35,7 +35,7 @@ export function viewScheme(stage, { onPick, onCluster }) {
   const ctx = canvas.getContext('2d');
   let nodes = [], clusters = [], at = new Map(), bundles = [], linksOf = new Map();
   let mark = { selected: null, near: new Set(), colorOf: () => '#8b949e' };
-  let x = 0, y = 0, k = 1, drag = null, theme = {}, fitted = false;
+  let x = 0, y = 0, k = 1, drag = null, theme = {}, fitted = false, over = null;
 
   const readTheme = () => {
     const css = getComputedStyle(stage);
@@ -79,7 +79,9 @@ export function viewScheme(stage, { onPick, onCluster }) {
 
     // Arcs between spheres: thicker means more shared connections.
     ctx.lineCap = 'round';
-    for (const bundle of bundles) {
+    // Without a hovered circle only the strongest arcs are drawn; hovering shows that sphere's arcs.
+    const arcs = over ? bundles.filter(e => e.a === over || e.b === over) : bundles.slice(0, 8);
+    for (const bundle of arcs) {
       const { a, b, count, strength } = bundle;
       const gradient = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
       gradient.addColorStop(0, a.color); gradient.addColorStop(1, b.color);
@@ -99,7 +101,9 @@ export function viewScheme(stage, { onPick, onCluster }) {
     }
 
     const groups = new Map(), bright = [];
+    const open = c => c.r * k > 150 || c.members.some(m => m.id === mark.selected);
     for (const n of nodes) {
+      if (!open(at.get(n.id).cluster)) continue;
       const p = at.get(n.id);
       if (!inside(p.x, p.y, 14)) continue;
       const chosen = n.id === mark.selected, near = mark.near.has(n.id);
@@ -152,7 +156,18 @@ export function viewScheme(stage, { onPick, onCluster }) {
       const [sx, sy] = screen({ x: c.x, y: c.y - c.r });
       label(`${c.name} · ${c.members.length.toLocaleString('ru')}`, sx, sy - 6, '700 12px system-ui, sans-serif', theme.ink);
     }
+    for (const { a, b, count } of arcs) {
+      const [sx, sy] = screen({ x: (a.x + b.x) / 2 - (b.y - a.y) * 0.09, y: (a.y + b.y) / 2 + (b.x - a.x) * 0.09 });
+      label(`${count.toLocaleString('ru')} связей`, sx, sy, '600 11px system-ui, sans-serif', theme.ink);
+    }
     for (const c of clusters) {
+      if (open(c) || c.r * k < 36) continue;
+      // A closed circle names its leaders instead of showing thousands of dots.
+      const [sx, sy] = screen(c);
+      c.members.filter(m => m.group !== 'sphere').slice(0, c.r * k > 70 ? 3 : 1)
+        .forEach((n, i) => label(n.name, sx, sy - 14 + i * 16, '500 11px system-ui, sans-serif', theme.ink));
+    }
+    for (const c of clusters.filter(open)) {
       // The more a galaxy fills the screen, the more of its leading assets get names.
       for (const n of c.members.filter(m => m.group !== 'sphere').slice(0, Math.min(40, Math.floor(c.r * k / 45)))) {
         const [sx, sy] = screen(at.get(n.id));
@@ -195,12 +210,13 @@ export function viewScheme(stage, { onPick, onCluster }) {
       drag.moved ||= Math.hypot(dx, dy) > 4; x = drag.x + dx; y = drag.y + dy; tip.hidden = true; redraw(); return;
     }
     const [sx, sy] = point(e), { node, cluster } = hit(sx, sy);
+    if (over !== (cluster ?? null)) { over = cluster ?? null; redraw(); }
     tip.hidden = !node && !cluster;
     tip.textContent = node ? node.name : cluster ? `${cluster.name} · ${cluster.members.length}` : '';
     tip.style.transform = `translate(${sx + 14}px, ${sy + 12}px)`;
     canvas.style.cursor = node || cluster ? 'pointer' : 'grab';
   };
-  canvas.onpointerleave = () => { tip.hidden = true; };
+  canvas.onpointerleave = () => { tip.hidden = true; over = null; redraw(); };
   canvas.onpointerup = e => {
     if (!e.isPrimary || !drag || drag.moved) { drag = null; return; }
     drag = null;

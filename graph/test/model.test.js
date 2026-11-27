@@ -5,6 +5,8 @@ import { test } from 'node:test';
 import { cellsFor, latestFor, mergeEvents, sortEvents, totalOf } from '../activity.js';
 import { sortAssets } from '../browse.js';
 import { headlinesFor } from '../newsroom.js';
+import { analyze, explainDay, seriesContext } from '../chart.js';
+import { connectedSubgraph } from '../explain.js';
 import { packClusters } from '../scheme.js';
 import { coarsen, inRing, place, project, unproject } from '../earth.js';
 import { syntheticGraph } from '../fixture.js';
@@ -199,4 +201,27 @@ test('coarse event cells keep every event', () => {
   assert.equal(out.length, 2);
   assert.equal(out.reduce((n, c) => n + c.count, 0), 8);
   assert.equal(out[0].lon, 1.5);
+});
+
+test('unusual days are marked and explained from the data', () => {
+  const day = i => `2026-01-${String(i + 1).padStart(2, '0')}`;
+  const candles = Array.from({ length: 25 }, (_, i) => { const c = 100 + (i % 2); return [day(i), 100, 102, 99, c, 10]; });
+  candles.push([day(25), 101, 131, 100, 130, 80]);
+  const series = { symbol: 'AAA', name: 'Aaa', candles };
+  const days = analyze(candles);
+  assert.ok(days.at(-1).marked && days.at(-1).high30 && !days[20].marked);
+  const news = { sources: [{ name: 'Src' }], headlines: [{ t: `${day(25)}T01:00`, s: 0, title: 'Aaa lists' }, { t: `${day(25)}T01:00`, s: 0, title: 'Aaab' }] };
+  const context = seriesContext(series, { series: [series] }, [], news);
+  assert.equal(context.headlines.length, 1);
+  const facts = explainDay(series, days, 25, context).join(' ');
+  assert.match(facts, /Объём торгов/);
+  assert.match(facts, /Aaa lists/);
+});
+
+test('the 3D subgraph is small and every shown node is linked', () => {
+  const real = buildModel(snapshot);
+  const part = connectedSubgraph(real, [...real.nodes.values()], real.links, null);
+  assert.ok(part.nodes.length > 100 && part.nodes.length < 700);
+  const linked = new Set(part.links.flatMap(l => [l.source, l.target]));
+  assert.ok(part.nodes.every(n => linked.has(n.id)));
 });

@@ -67,3 +67,10 @@ Open merge gates:
   worldmonitor datasets. Needs a coordinator/owner decision: confirm, or drop them from the snapshot.
 - Rebase on `origin/master` before marking ready.
 - China/Europe sources requested by the owner are outside the approved scope; not committed.
+
+### Owner requests after head 66dbde1
+Relayed by the owner: the coordinator allowed these. Please record it in Issue #11.
+Added: candle charts with explanations, readable 3D graph and scheme, lighter globe redraws,
+China/Europe events. `node --test` on graph files: 72 passed. Globe benchmark while moving at
+1440x900: 30.9 FPS; no redraws while idle. Redistribution rights for Binance candles and the new
+China/Europe sources are unverified (same open merge gate).

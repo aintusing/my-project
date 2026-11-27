@@ -64,7 +64,7 @@ function shade(cells) {
   const busiest = Math.log1p(cells.reduce((max, c) => Math.max(max, c.count), 1));
   return cells.map(c => {
     const t = Math.log1p(c.count) / busiest;
-    return { ...c, sin: Math.sin(c.lat * RAD), cos: Math.cos(c.lat * RAD), radius: 0.5 + t * t * t * 6.5, level: t < 0.45 ? 0 : t < 0.7 ? 1 : 2 };
+    return { ...c, sin: Math.sin(c.lat * RAD), cos: Math.cos(c.lat * RAD), radius: 0.5 + t * t * t * 3.6, level: t < 0.45 ? 0 : t < 0.7 ? 1 : 2 };
   });
 }
 
@@ -77,9 +77,9 @@ export function viewEarth(stage, { world, flat = false, onPick, onCountry, onGeo
   const ctx = canvas.getContext('2d');
   const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
   let layout = place([], world.countries), mark = { selected: null, near: new Set(), colorOf: () => '#fff', country: null };
-  let lon0 = 10, lat0 = 24, zoom = 1, phase = 0, spinning = !calm && !flat, target = null, drag = null, hover = null;
+  let lon0 = 10, lat0 = 24, zoom = 1, phase = 0, spinning = false, target = null, drag = null, hover = null;
   let shows = { orbit: true, labels: true, alerts: true }, S = 1, geoLayers = [], geoHits = [];
-  let eventCells = [], coarseCells = [], eventHits = [], skipped = 0;
+  let eventCells = [], coarseCells = [], eventHits = [], skipped = 0, busy = false;
   let hits = [], frame = 0, theme = {}, cx = 0, cy = 0, R = 1;
 
   const readTheme = () => {
@@ -159,6 +159,7 @@ export function viewEarth(stage, { world, flat = false, onPick, onCountry, onGeo
     const groups = new Map(), f0 = lat0 * RAD, sin0 = Math.sin(f0), cos0 = Math.cos(f0), w = stage.clientWidth, h = stage.clientHeight;
     const scale = Math.sqrt(zoom) * Math.min(1.15, Math.max(0.55, Math.min(w, h) / 700));
     for (const cell of zoom < 2.2 ? coarseCells : eventCells) {
+      if (moving() && cell.level === 0) continue; // fewer discs while moving
       let x, y, depth = 1;
       if (flat) { x = cx + wrap(cell.lon - lon0) * S; y = cy - (cell.lat - lat0) * S; }
       else {
@@ -229,9 +230,13 @@ export function viewEarth(stage, { world, flat = false, onPick, onCountry, onGeo
     ctx.fillStyle = theme.ink; ctx.fillText(item.name, x + 14, y + 4);
   }
 
+  const moving = () => busy || spinning || Boolean(target) || Boolean(drag?.moved);
+
   function drawOrbit(front) {
     const tilt = 24 * RAD, groups = new Map();
-    for (const item of layout.orbit) {
+    const stride = moving() ? 2 : 1;
+    for (let index = 0; index < layout.orbit.length; index += stride) {
+      const item = layout.orbit[index];
       const a = item.angle + phase + lon0 * RAD * 0.4;
       const x = Math.cos(a) * item.band, d = Math.sin(a) * item.band;
       const y = -d * Math.sin(tilt) - lat0 * 0.001 * d, z = d * Math.cos(tilt);
@@ -295,7 +300,7 @@ export function viewEarth(stage, { world, flat = false, onPick, onCountry, onGeo
   }
 
   function draw() {
-    const w = stage.clientWidth, h = stage.clientHeight, ratio = Math.min(1.5, devicePixelRatio || 1);
+    const w = stage.clientWidth, h = stage.clientHeight, ratio = Math.min(1.25, devicePixelRatio || 1);
     if (!w || !h) return;
     if (canvas.width !== Math.round(w * ratio) || canvas.height !== Math.round(h * ratio)) {
       canvas.width = Math.round(w * ratio); canvas.height = Math.round(h * ratio);
@@ -354,7 +359,7 @@ export function viewEarth(stage, { world, flat = false, onPick, onCountry, onGeo
   function finish() {
     drawGeoPoints();
     if (shows.alerts) drawAlerts();
-    if (shows.labels) drawLabels();
+    if (shows.labels && !drag?.moved) drawLabels();
     drawSelection();
   }
 
@@ -367,11 +372,14 @@ export function viewEarth(stage, { world, flat = false, onPick, onCountry, onGeo
     } else if (spinning) { lon0 += 0.05; phase += 0.0006; }
     // When only markers pulse, a third of the frames is enough.
     if (target || spinning || (skipped = (skipped + 1) % 3) === 0) draw();
-    const pulsing = !calm && (mark.selected || (shows.alerts && layout.ground.some(i => i.node.meta?.hack)));
+    const pulsing = !calm && shows.alerts && layout.ground.some(i => i.node.meta?.hack);
     frame = target || spinning || pulsing ? requestAnimationFrame(tick) : 0;
   }
   const wake = () => { if (!frame) frame = requestAnimationFrame(tick); };
   const redraw = () => { draw(); wake(); };
+  // Pointer events arrive faster than frames: draw at most once per frame.
+  let pending = 0;
+  const soon = () => { if (!pending && frame !== -1) pending = requestAnimationFrame(() => { pending = 0; redraw(); }); };
   const rotate = on => { spinning = on && !flat; onRotate(spinning); wake(); };
   const zoomBy = factor => { zoom = Math.min(7, Math.max(0.6, zoom * factor)); target = null; redraw(); };
   const flyTo = (lon, lat, level) => {
@@ -420,10 +428,11 @@ export function viewEarth(stage, { world, flat = false, onPick, onCountry, onGeo
       drag.moved ||= Math.hypot(dx, dy) > 4;
       const step = flat ? 1 / S : 57 / R;
       lon0 = drag.lon0 - dx * step; lat0 = Math.max(-80, Math.min(80, drag.lat0 + dy * step));
-      tip.hidden = true; redraw(); return;
+      tip.hidden = true; soon(); return;
     }
     const [x, y] = at(e), geo = geoAt(x, y), node = geo ? null : nodeAt(x, y), cell = geo || node ? null : cellAt(x, y);
     const code = geo || node || cell ? null : countryAt(x, y);
+    const changed = hover !== (code ?? null);
     hover = code ?? null;
     tip.hidden = !geo && !node && !cell && !code;
     tip.textContent = geo ? `${geo.item.name} · ${geo.layer.label}` : node ? node.name
@@ -431,12 +440,12 @@ export function viewEarth(stage, { world, flat = false, onPick, onCountry, onGeo
         : code ? `${world.countries[code]?.name ?? code} · ${layout.counts.get(code) ?? 0}` : '';
     tip.style.transform = `translate(${x + 14}px, ${y + 12}px)`;
     canvas.style.cursor = geo || node || cell || code ? 'pointer' : 'grab';
-    redraw();
+    if (changed) soon();
   };
   canvas.onpointerleave = () => { tip.hidden = true; hover = null; redraw(); };
   canvas.onpointerup = e => {
-    if (!e.isPrimary || !drag || drag.moved) { drag = null; return; }
-    drag = null;
+    if (!e.isPrimary || !drag || drag.moved) { drag = null; redraw(); return; }
+    drag = null; redraw();
     const [x, y] = at(e), geo = geoAt(x, y), node = geo ? null : nodeAt(x, y), cell = geo || node ? null : cellAt(x, y);
     const code = geo || node || cell ? null : countryAt(x, y);
     if (geo) onGeo?.(geo.item, geo.layer); else if (node) onPick(node.id); else if (cell) onCell?.(cell); else if (code) onCountry(code);
@@ -447,7 +456,11 @@ export function viewEarth(stage, { world, flat = false, onPick, onCountry, onGeo
   onRotate(spinning);
 
   return {
-    show(nodes) { layout = place(nodes, world.countries); redraw(); },
+    show(nodes) {
+      layout = place(nodes, world.countries);
+      layout.orbit = layout.orbit.slice(0, 1800); // only the largest stay in orbit
+      redraw();
+    },
     mark(next) { mark = next; readTheme(); redraw(); },
     focus(id) { const item = layout.ground.find(i => i.node.id === id); if (item) flyTo(item.lon, item.lat, Math.max(zoom, flat ? 2.5 : 1.5)); else { rotate(false); redraw(); } },
     focusCountry(code) { const country = world.countries[code]; if (country) flyTo(...country.at, Math.max(zoom, flat ? 2.5 : 1.7)); },
@@ -462,7 +475,7 @@ export function viewEarth(stage, { world, flat = false, onPick, onCountry, onGeo
     focusGeo({ lon, lat }) { flyTo(lon, lat, Math.max(zoom, flat ? 2.8 : 1.8)); },
     flyTo,
     zoom: zoomBy,
-    spin() { rotate(false); return () => { lon0 += 0.6; phase += 0.004; draw(); }; },
+    spin() { rotate(false); return () => { busy = true; lon0 += 0.6; phase += 0.004; draw(); busy = false; }; },
     destroy() { cancelAnimationFrame(frame); frame = -1; resize.disconnect(); stage.replaceChildren(); },
   };
 }

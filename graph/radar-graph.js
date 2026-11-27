@@ -1,6 +1,8 @@
 // Public module: createRadarGraph(root, data, options). See README.md.
 import { PERIODS, activityOverview, cellCard, cellsFor, companySection } from './activity.js';
 import { browser } from './browse.js';
+import { chartPanel, viewChart } from './chart.js';
+import { HELP, SPHERE_TEXT, connectedSubgraph } from './explain.js';
 import { viewEarth } from './earth.js';
 import { GEO_GROUPS, anchor, geoCard, geoOverview, searchGeo } from './geo.js';
 import { buildModel, filterBySphere, search, spheres } from './model.js';
@@ -10,7 +12,6 @@ import { RISK, TYPES, colorer, riskOf, sphereColors } from './palette.js';
 import { viewScheme } from './scheme.js';
 import { view3d } from './views.js';
 
-const GRAPH_LIMIT = 6000; // more spheres than this make the 3D graph too slow
 const THEMES = [['night', 'Тушь'], ['aurora', 'Мох'], ['day', 'Бумага']];
 const ASSET_LAYERS = [['project', 'Крипто-проекты'], ['meme', 'Мемкоины'], ['coin', 'Монеты'], ['exchange', 'Биржи'], ['stock', 'Акции']];
 const MAP_LAYERS = [['orbit', 'Орбита: без страны'], ['labels', 'Подписи стран'], ['alerts', 'Сигналы взломов']];
@@ -32,19 +33,20 @@ const picker = (label, entries, onchange) => {
 
 export function createRadarGraph(root, data, options = {}) {
   const { onSelect = () => {}, force2d = false, forceGraph = globalThis.ForceGraph3D, simplifyAbove = 2000,
-    world = null, geo = null, events = null, news = null, analytics = null, date = data?.date ?? null } = options;
+    world = null, geo = null, events = null, news = null, analytics = null, candles = null, date = data?.date ?? null } = options;
   const model = buildModel(data);
   const names = spheres(model), colors = sphereColors(names);
   const can3d = Boolean(!force2d && forceGraph && hasWebGL());
-  const modes = [world && ['earth', 'Глобус'], world && ['map', 'Карта'], can3d && ['3d', 'Граф'], ['2d', 'Схема']].filter(Boolean);
-  const hidden = new Set(), shows = { orbit: true, labels: true, alerts: true };
+  const modes = [world && ['earth', 'Глобус'], world && ['map', 'Карта'], can3d && ['3d', 'Граф'], ['2d', 'Схема'], candles?.series.length && ['chart', 'Свечи']].filter(Boolean);
+  const hidden = new Set(), shows = { orbit: true, labels: true, alerts: false };
   let shown = { nodes: [], links: [] }, selected = null, country = null, colorMode = 'sphere', view = null, mode = null;
-  let riskOnly = false, period = '365', geoPick = null;
+  let riskOnly = false, period = '365', geoPick = null, drawn = 0;
   // World layers only make sense on a map; finance layers start switched on.
   const geoAll = world ? geo?.layers ?? [] : [];
   const geoOn = new Set(geoAll.filter(l => l.group === 'finance').map(l => l.id)), geoBoxes = new Map();
   const activeGeo = () => geoAll.filter(l => geoOn.has(l.id));
-  const feed = world ? events : null, feedOn = new Set(feed?.datasets.map(d => d.id) ?? []);
+  const feed = world ? events : null, feedOn = new Set(feed?.datasets.map(d => d.id).filter(id => /conflict|quake|sanction|protest|eonet|tsunami|erupt|cneu_ted|cneu_govuk|cneu_ems/.test(id)) ?? []);
+  let chartState = null;
   let span = '30', cellPick = null;
   let feedState = { sort: 'new', only: '', limit: 20 }, browseState = { sort: 'score', type: '', limit: 25 };
   let newsState = { category: '', query: '', sort: 'new', limit: 30 }, tab = 'overview';
@@ -83,7 +85,7 @@ export function createRadarGraph(root, data, options = {}) {
   const riskBox = check('Только с флагами и взломами', false, on => { riskOnly = on; apply(); });
   const layers = el('details', { className: 'rg-layers', open: matchMedia('(min-width: 761px)').matches },
     el('summary', { textContent: 'Слои' }), ...assetBoxes, el('hr'), riskBox,
-    ...(world ? MAP_LAYERS.map(([key, label]) => check(label, true, on => { shows[key] = on; view.layers?.(shows); })) : []));
+    ...(world ? MAP_LAYERS.map(([key, label]) => check(label, shows[key], on => { shows[key] = on; view.layers?.(shows); })) : []));
   for (const [group, title] of Object.entries(GEO_GROUPS)) {
     const members = geoAll.filter(l => l.group === group);
     if (!members.length) continue;
@@ -100,14 +102,18 @@ export function createRadarGraph(root, data, options = {}) {
     choice.value = span;
     layers.querySelector('summary').after(el('fieldset', {}, el('legend', { textContent: 'События' }), choice,
       ...feed.datasets.map(d => {
-        const row = check(`${d.label} · ${d.total.toLocaleString('ru')}`, true, on => { if (on) feedOn.add(d.id); else feedOn.delete(d.id); updateEvents(); });
+        const row = check(`${d.label} · ${d.total.toLocaleString('ru')}`, feedOn.has(d.id), on => { if (on) feedOn.add(d.id); else feedOn.delete(d.id); updateEvents(); });
         const swatch = el('i'); swatch.style.background = d.color;
         row.querySelector('input').after(swatch);
         return row;
       })));
   }
   const canvasHost = el('div', { className: 'rg-canvas' });
-  stage.append(canvasHost, layers, regions, tools);
+  const help = el('details', { className: 'rg-help' });
+  stage.append(canvasHost, layers, regions, tools, help);
+  function renderHelp() {
+    help.replaceChildren(el('summary', { textContent: 'Как читать' }), el('ul', {}, ...HELP[mode].map(text => el('li', { textContent: text }))));
+  }
 
   root.classList.add('rg');
   root.dataset.theme ||= 'night';
@@ -128,10 +134,9 @@ export function createRadarGraph(root, data, options = {}) {
 
   const describe = text => {
     const label = modes.find(([value]) => value === mode)[1];
-    const simplified = mode !== '3d' || shown.nodes.length <= simplifyAbove ? ''
-      : shown.nodes.length > GRAPH_LIMIT ? ` · показаны ${GRAPH_LIMIT} крупнейших, связи только у выбранного` : ' · связи только у выбранного';
     const note = mode === 'earth' ? ' · без страны — на орбите' : mode === 'map' ? ' · только с известной страной' : '';
-    status.textContent = text ?? `${label}: ${shown.nodes.length.toLocaleString('ru')}${note}${simplified}`;
+    const count = mode === '3d' ? `${drawn.toLocaleString('ru')} ключевых узлов из ${shown.nodes.length.toLocaleString('ru')}` : shown.nodes.length.toLocaleString('ru');
+    status.textContent = text ?? (mode === 'chart' ? `Свечи: ${candles.series.length} активов, источник ${candles.source}, снимок ${candles.generated}` : `${label}: ${count}${note}`);
   };
 
   function paint() {
@@ -151,6 +156,10 @@ export function createRadarGraph(root, data, options = {}) {
   }
 
   function renderPanel() {
+    if (mode === 'chart') {
+      panel.replaceChildren(...chartPanel(chartState));
+      return;
+    }
     const handlers = {
       countries: world?.countries, date, period,
       onPeriod: value => { period = value; renderPanel(); panel.querySelector('.rg-period')?.focus(); },
@@ -185,7 +194,8 @@ export function createRadarGraph(root, data, options = {}) {
         news: () => newsSection(news, newsState, onNews),
       }[tab];
       const heading = tab === 'overview' ? title : el('h2', { textContent: TABS.find(t => t[0] === tab)[1], tabIndex: -1 });
-      return [tabBar, heading, ...body()];
+      const about = filter.value && SPHERE_TEXT[filter.value] ? el('p', { textContent: `${filter.value}. ${SPHERE_TEXT[filter.value]}` }) : null;
+      return [tabBar, heading, about, ...body()];
     };
     panel.replaceChildren(...(cellPick ? cellCard(feed, feedOn, span, cellPick, { ...handlers, onEvent })
       : geoPick ? geoCard(geoPick, handlers)
@@ -199,16 +209,15 @@ export function createRadarGraph(root, data, options = {}) {
   function refresh() { paint(); renderPanel(); describe(); }
 
   function draw() {
-    if (mode !== '3d' || shown.nodes.length <= GRAPH_LIMIT) return view.show(shown.nodes, shown.links);
-    const keep = [...shown.nodes].sort((a, b) => b.size - a.size).slice(0, GRAPH_LIMIT);
-    const chosen = model.nodes.get(selected);
-    if (chosen && !keep.includes(chosen)) keep.push(chosen);
-    const ids = new Set(keep.map(n => n.id));
-    view.show(keep, shown.links.filter(l => ids.has(l.source) && ids.has(l.target)));
+    if (mode !== '3d') return view.show(shown.nodes, shown.links);
+    const part = connectedSubgraph(model, shown.nodes, shown.links, selected);
+    view.show(part.nodes, part.links);
+    drawn = part.nodes.length;
   }
 
   function setView(next) {
     view?.destroy();
+    view = null;
     mode = modes.some(([value]) => value === next) ? next : modes[0][0];
     if (mode === '3d') {
       try { view = view3d(canvasHost, forceGraph, id => select(id), onRotate, simplifyAbove); }
@@ -220,9 +229,14 @@ export function createRadarGraph(root, data, options = {}) {
       view.geo(activeGeo());
       view.events(activeCells());
     }
+    if (mode === 'chart') {
+      view = viewChart(canvasHost, { candles, nodes: context.nodes, news, onChange: state => { chartState = state; if (view) renderPanel(); } });
+    }
     if (mode === '2d') view = viewScheme(canvasHost, { onPick: id => select(id), onCluster: name => setSphere(filter.value === name ? '' : name) });
     for (const tab of tabs.children) tab.setAttribute('aria-pressed', String(tab.value === mode));
     regions.hidden = !view.flyTo;
+    layers.hidden = mode === 'chart';
+    renderHelp();
     tools.replaceChildren(...[(mode === 'earth' || mode === '3d') && pause,
       mode !== '3d' && button('+', () => view.zoom(1.4), 'Приблизить'),
       mode !== '3d' && button('−', () => view.zoom(1 / 1.4), 'Отдалить')].filter(Boolean));
@@ -332,6 +346,7 @@ export function createRadarGraph(root, data, options = {}) {
     selected = id;
     geoPick = null;
     cellPick = null;
+    if (mode === '3d') draw();
     // Hubs have no place on the map, so show them in a graph view.
     if (['earth', 'map'].includes(mode) && ['sphere', 'chain'].includes(node.group)) setView(can3d ? '3d' : '2d');
     paint();

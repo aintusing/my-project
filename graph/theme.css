@@ -28,3 +28,20 @@ h1::before { content: none; }
 .rg-panel section { background: transparent; border-width: 1px 0 0; border-radius: 0; padding-inline: 0; }
 .rg-status::before { content: none; }
 .rg .rg-tabs button[aria-pressed="true"], .rg .rg-panel .rg-panel-tabs button[aria-pressed="true"] { background: var(--text); border-color: var(--text); color: var(--bg); }
+
+/* How-to-read note over the stage. */
+.rg-help { position: absolute; z-index: 3; right: 12px; bottom: 56px; max-width: min(360px, calc(100% - 24px)); background: var(--card); border: 1px solid var(--edge); border-radius: 3px; padding: 6px 10px; font-size: 12px; }
+.rg-help summary { cursor: pointer; font-weight: 600; }
+.rg-help ul { margin: 8px 0 2px; padding-left: 16px; color: var(--dim); }
+.rg-help li { margin-bottom: 6px; }
+/* Candles. */
+.rg-chart { position: absolute; inset: 0; display: flex; flex-direction: column; }
+.rg-chart-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 56px 6px 12px; }
+.rg-ranges { display: flex; gap: 4px; }
+.rg-ohlc { margin: 0; flex-basis: 100%; font-size: 12px; color: var(--dim); font-variant-numeric: tabular-nums; }
+.rg-chart-area { flex: 1; min-height: 0; position: relative; }
+.rg-chart-area canvas { position: absolute; inset: 0; cursor: crosshair; touch-action: none; }
+.rg-panel ul.rg-facts { padding-left: 18px; list-style: disc; }
+.rg-facts li { margin-bottom: 8px; }
+.rg-names { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.rg-names span { position: absolute; left: 0; top: 0; white-space: nowrap; font-size: 11px; font-weight: 600; color: var(--earth-ink); text-shadow: 0 0 3px var(--earth-space), 0 0 3px var(--earth-space); }
